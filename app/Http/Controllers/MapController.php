@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Baliza;
 
 class MapController extends Controller
 {
@@ -13,7 +14,7 @@ class MapController extends Controller
 
     public function obtenerDatos()
     {
-        $balizas = \DB::table('baliza')->get();
+        $balizas = Baliza::all();
         return response()->json($balizas);
     }
 }
