@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('baliza', function (Blueprint $table) {
             $table->id();
-            $table->integer('latitud');
-            $table->integer('longitud');
+            $table->string('latitud');
+            $table->string('longitud');
             $table->string('municipio');
             $table->timestamps();
         });
