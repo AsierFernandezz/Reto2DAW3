@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
 </head>
 <body>
-    <table id="tiempoBody"></table>
     <div id="mapid" style="height: 800px;width: 50%;float: left;"></div>
+    <p id="datos"></p>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
@@ -33,6 +33,24 @@
             })
             .catch(error => console.error('Error fetching data:', error));
 
+            const options = {method: 'GET'};
+            const id = '20069';
+
+                //obtiene los datos del municipio solicitado
+                fetch('https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/' + id + '/?api_key=' + '{{env('API_KEY')}}', options)
+                .then(response => response.json())
+                .then(data => {
+                    let urlDatos = data.datos;
+                    return fetch(urlDatos, options)
+                        .then(response => response.json())
+                        .then(datos =>{
+                            // document.getElementById('datos').innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+
+                            // const tiempo = datos[0].prediccion.dia[0];
+                            // document.write("Predicción del tiempo en: " + datos[0].nombre);
+
+                        })
+                });
     </script>
 </body>
 </html>
