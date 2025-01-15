@@ -9,7 +9,7 @@ use App\Models\Baliza;
 class MapController extends Controller
 {
     public function index(){
-        return view("tiempo");
+        return view("tiempo", ['id' => 20045]);
     }
 
     public function obtenerDatos()
