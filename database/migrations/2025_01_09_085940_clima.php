@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('datos_meteorologicos', function (Blueprint $table) {
+        Schema::create('climas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('baliza_id');
-            $table->decimal('precipitacion', 5, 2)->nullable();
-            $table->decimal('humedad', 5, 2)->nullable();
-            $table->decimal('velocidad_viento', 5, 2)->nullable();
-            $table->string('direccion_viento')->nullable();
+            $table->decimal('temperatura', 5, 2)->nullable();
+            $table->decimal('presion_atmosferica', 6, 2)->nullable();
+            $table->decimal('precipitaciones', 5, 2)->nullable();
+            $table->decimal('viento', 5, 2)->nullable();
+            $table->string('tiempo')->nullable();
+            $table->timestamp('fecha')->nullable();
             $table->timestamps();
 
             $table->foreign('baliza_id')->references('id')->on('baliza');
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('datos_meteorologicos');
+        Schema::dropIfExists('climas');
     }
 };
