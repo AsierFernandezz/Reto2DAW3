@@ -21,6 +21,15 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
+            // Objeto que mapea municipios a códigos AEMET
+            const municipiosAEMET = {
+                'Bilbao': '48020',
+                'Donostia': '20069',
+                'Vitoria-Gasteiz': '01059',
+                'Eibar': '20030',
+                'Irun': '20045',
+            };
+
             //recibe los datos de las balizas del controlador
             fetch('/datos-balizas')
                 .then(response => response.json())
@@ -28,6 +37,12 @@
                     data.forEach(baliza => {
                         L.marker([baliza.latitud, baliza.longitud])
                         .bindPopup(`<b>${baliza.municipio}</b>`)
+                        .on('click', function() {
+                            const codigoAEMET = municipiosAEMET[baliza.municipio];
+                            if (codigoAEMET) {
+                                window.location.href = `/tiempo?id=${codigoAEMET}`;
+                            }
+                        })
                         .addTo(map);
                     });
                 })

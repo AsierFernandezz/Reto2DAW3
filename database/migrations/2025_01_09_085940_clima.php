@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('precipitaciones', 5, 2)->nullable();
             $table->decimal('viento', 5, 2)->nullable();
             $table->string('tiempo')->nullable();
-            $table->timestamp('fecha')->nullable();
+            $table->dateTime('fecha')->nullable();
             $table->timestamps();
 
             $table->foreign('baliza_id')->references('id')->on('baliza');
