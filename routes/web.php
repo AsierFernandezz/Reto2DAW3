@@ -9,3 +9,4 @@ Route::get('/', function () {
 
 Route::get('/tiempo/{id?}', [MapController::class, 'index']);
 Route::get('/datos-balizas', [MapController::class, 'obtenerDatos']);
+Route::get('/municipio/{name?}', [MapController::class,'datosMunicipio']);

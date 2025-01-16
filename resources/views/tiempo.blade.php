@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
 </head>
 <body>
+
     <div id="mapid" style="height: 800px;width: 50%;float: left;"></div>
     <div id="prueba" style="float: left; width: 45%; padding: 20px;"></div>
 
@@ -92,4 +93,4 @@
         });
     </script>
 </body>
-</html>
+</html> --}}

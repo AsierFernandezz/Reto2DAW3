@@ -23,12 +23,12 @@ class SeederClima extends Seeder
             ['latitud' => '43.2847', 'longitud' => '-2.4671', 'municipio' => 'Eibar'],
             ['latitud' => '43.3349', 'longitud' => '-1.7897', 'municipio' => 'Irun'],
         ];
-
+        Baliza::factory()->count(5)->create();
         foreach ($balizas as $baliza) {
             $baliza = Baliza::create($baliza);
             $date = Carbon::now()->subMonths(6);
 
-            for ($i = 0; $i < 180; $i++) {
+            for ($i = 0; $i < 2184; $i++) {
                 Clima::factory()->create([
                     'baliza_id' => $baliza->id,
                     'fecha' => $date->copy()->addHours($i * 2), // Incrementar la fecha cada 2 horas
