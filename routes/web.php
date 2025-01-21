@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MapController;
+use App\Http\Controllers\ClimaController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tiempo/{id?}', [MapController::class, 'index']);
-Route::get('/datos-balizas', [MapController::class, 'obtenerDatos']);
-Route::get('/municipio/{name?}', [MapController::class,'datosMunicipio']);
+Route::get('/tiempo/{id?}', [ClimaController::class, 'index']);
+Route::get('/municipio/{name?}', [ClimaController::class,'datosMunicipio']);
