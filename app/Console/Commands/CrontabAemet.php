@@ -4,53 +4,52 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use App\Models\Clima;
 use App\Models\Baliza;
-use Carbon\Carbon;
+use App\Models\Clima;
 
 class CrontabAemet extends Command
 {
-    protected $signature = 'aemet:fetch-data';
-    protected $description = 'Fetch data from AEMET API and store in the Clima model';
+    // El nombre y la firma del comando
+    protected $signature = 'fetch:clima';
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    // Descripción del comando
+    protected $description = 'Obtiene el clima de Irun desde OpenWeather y lo guarda en la base de datos';
 
+    // Ejecutar el comando
     public function handle()
     {
-        $balizas = Baliza::all(); // Obtiene todas las balizas
-
+        // Tu API Key de OpenWeather
+        $apiKey = env('API_KEY');
+        $balizas = Baliza::all();
         foreach ($balizas as $baliza) {
-            $idAemet = $baliza->id;
-            $apiKey = env('API_KEY'); // Reemplaza con tu API key
+            $this->info("Obteniendo el clima para: {$baliza->municipio}");
 
-            $response = Http::get("https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/{$idAemet}", [
-                'api_key' => $apiKey,
-            ]);
+        // Realiza la solicitud HTTP a la API de OpenWeather
+        $response = Http::get("https://api.openweathermap.org/data/2.5/weather?q={$baliza->municipio}&appid={$apiKey}&units=metric&lang=es");
 
-            if ($response->successful()) {
-                $data = $response->json();
+        // Si la respuesta es exitosa
+        if ($response->successful()) {
+            $data = $response->json();
 
-                // Supongamos que la respuesta contiene los siguientes campos:
-                $climaData = [
-                    'baliza_id' => $baliza->id,
-                    'temperatura' => $data['temperatura'],  // Ajusta según la estructura real de los datos
-                    'presion_atmosferica' => $data['presion_atmosferica'],
-                    'precipitaciones' => $data['precipitaciones'],
-                    'viento' => $data['viento'],
-                    'tiempo' => $data['tiempo'],
-                    'fecha' => Carbon::now(),  // O ajusta según el dato de fecha recibido
-                ];
+            // Extraemos la información relevante del clima
+            $tiempo = [
+                'fecha' => now(), // Usamos la fecha y hora actuales
+                'temperatura' => $data['main']['temp'],
+                'humedad' => $data['main']['humidity'],
+                'tiempo' => $data['weather'][0]['description'],
+                'viento' => $data['wind']['speed'],
+                'precipitaciones' => $data['rain']['1h'] ?? 0, // Lluvia en la última hora, si existe
+                'presion_atmosferica' => $data['main']['pressure'] ?? 0, // Precipitación, si existe
+                'baliza_id' => $baliza->id,
+            ];
 
-                Clima::create($climaData);
+            // Insertar los datos en la base de datos (modelo Weather)
+            Clima::create($tiempo);
 
-                $this->info("Data for baliza ID {$baliza->id} stored successfully.");
-            } else {
-                $this->error("Failed to fetch data for baliza ID {$baliza->id} from AEMET API.");
-            }
+            $this->info('Clima de '. $baliza->nombre.' insertado correctamente en la base de datos.');
+        } else {
+            $this->error('Error al obtener los datos del clima.');
         }
     }
+    }
 }
-

@@ -23,7 +23,6 @@ class SeederBaliza extends Seeder
                 'latitud' => $coords[0],
                 'longitud' => $coords[1],
                 'municipio' => $municipio,
-                'id_aemet' => $coords[2],
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

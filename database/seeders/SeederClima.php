@@ -12,11 +12,11 @@ class SeederClima extends Seeder{
         // Obtener todas las balizas
         {
             $balizas = [
-                ['id' => 1, 'id_aemet' => '48020', 'latitud' => '43.2630', 'longitud' => '-2.9350', 'municipio' => 'Bilbao'],
-                ['id' => 2, 'id_aemet' => '20069', 'latitud' => '43.3224', 'longitud' => '-1.9846', 'municipio' => 'Donostia'],
-                ['id' => 3, 'id_aemet' => '01059', 'latitud' => '42.8467', 'longitud' => '-2.6716', 'municipio' => 'Vitoria-Gasteiz'],
-                ['id' => 4, 'id_aemet' => '20030', 'latitud' => '43.2847', 'longitud' => '-2.4671', 'municipio' => 'Eibar'],
-                ['id' => 5, 'id_aemet' => '20045', 'latitud' => '43.3349', 'longitud' => '-1.7897', 'municipio' => 'Irun']
+                ['id' => 1, 'latitud' => '43.2630', 'longitud' => '-2.9350', 'municipio' => 'Bilbao'],
+                ['id' => 2, 'latitud' => '43.3224', 'longitud' => '-1.9846', 'municipio' => 'Donostia'],
+                ['id' => 3, 'latitud' => '42.8467', 'longitud' => '-2.6716', 'municipio' => 'Vitoria-Gasteiz'],
+                ['id' => 4, 'latitud' => '43.2847', 'longitud' => '-2.4671', 'municipio' => 'Eibar'],
+                ['id' => 5, 'latitud' => '43.3349', 'longitud' => '-1.7897', 'municipio' => 'Irun']
             ];
 
         // Iterar sobre cada baliza

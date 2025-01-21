@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('latitud', 20);
             $table->string('longitud', 20);
             $table->string('municipio', 50);
-            $table->string('id_aemet', 50);
             $table->timestamps();
         });
     }

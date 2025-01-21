@@ -66,6 +66,7 @@ class ClimaFactory extends Factory
         $presion = $this->faker->randomFloat(1, 1000, 1020); // Rango más realista
         $precipitaciones = $this->faker->randomFloat(1, 0, 25); // Menos precipitaciones extremas
         $viento = $this->faker->randomFloat(0, 0, 80); // Velocidad del viento más realista
+        $humedad = $this->faker->numberBetween(30, 100); // Humedad entre 30% y 100%
 
         // Determinar el tiempo basado en las condiciones
         $tiempo = 'Soleado';
@@ -84,6 +85,7 @@ class ClimaFactory extends Factory
             'presion_atmosferica' => $presion,
             'precipitaciones' => $precipitaciones,
             'viento' => $viento,
+            'humedad' => $humedad,
             'tiempo' => $tiempo,
             'fecha' => $date,
             'baliza_id' => $balizaId,

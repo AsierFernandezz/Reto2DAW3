@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('baliza_id');
             $table->decimal('temperatura', 5, 2)->nullable();
             $table->decimal('presion_atmosferica', 6, 2)->nullable();
+            $table->decimal('humedad', 5, 2)->nullable();
             $table->decimal('precipitaciones', 5, 2)->nullable();
             $table->decimal('viento', 5, 2)->nullable();
             $table->string('tiempo')->nullable();

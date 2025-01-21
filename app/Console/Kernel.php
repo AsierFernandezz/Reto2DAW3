@@ -10,7 +10,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // Ejecuta el comando cada 15 minutos
-        $schedule->command('fetch:aemet')->everyFifteenMinutes();
+        $schedule->command('fetch:clima')->everyFifteenMinutes();
     }
 
     protected function commands()

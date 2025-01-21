@@ -13,6 +13,7 @@ class Clima extends Model
         'temperatura',
         'presion_atmosferica',
         'precipitaciones',
+        'humedad',
         'viento',
         'tiempo',
         'fecha'
