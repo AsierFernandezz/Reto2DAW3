@@ -1,39 +1,36 @@
 <?php
-
+// database/seeders/ClimaSeeder.php
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Baliza;
 use App\Models\Clima;
-use Database\Factories\ClimaFactory;
+use App\Models\Baliza;
+use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class SeederClima extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        // Crear 10 balizas con datos de prueba de Euskal Herria
-        $balizas = [
-            ['latitud' => '43.2630', 'longitud' => '-2.9350', 'municipio' => 'Bilbao'],
-            ['latitud' => '43.3224', 'longitud' => '-1.9846', 'municipio' => 'Donostia'],
-            ['latitud' => '42.8467', 'longitud' => '-2.6716', 'municipio' => 'Vitoria-Gasteiz'],
-            ['latitud' => '43.2847', 'longitud' => '-2.4671', 'municipio' => 'Eibar'],
-            ['latitud' => '43.3349', 'longitud' => '-1.7897', 'municipio' => 'Irun'],
-        ];
-        Baliza::factory()->count(5)->create();
-        foreach ($balizas as $baliza) {
-            $baliza = Baliza::create($baliza);
-            $date = Carbon::now()->subMonths(6);
+class SeederClima extends Seeder{
+    public function run(): void{
+        // Obtener todas las balizas
+        {
+            $balizas = [
+                ['id' => 1, 'id_aemet' => '48020', 'latitud' => '43.2630', 'longitud' => '-2.9350', 'municipio' => 'Bilbao'],
+                ['id' => 2, 'id_aemet' => '20069', 'latitud' => '43.3224', 'longitud' => '-1.9846', 'municipio' => 'Donostia'],
+                ['id' => 3, 'id_aemet' => '01059', 'latitud' => '42.8467', 'longitud' => '-2.6716', 'municipio' => 'Vitoria-Gasteiz'],
+                ['id' => 4, 'id_aemet' => '20030', 'latitud' => '43.2847', 'longitud' => '-2.4671', 'municipio' => 'Eibar'],
+                ['id' => 5, 'id_aemet' => '20045', 'latitud' => '43.3349', 'longitud' => '-1.7897', 'municipio' => 'Irun']
+            ];
 
-            for ($i = 0; $i < 2184; $i++) {
+        // Iterar sobre cada baliza
+        foreach ($balizas as $baliza) {
+            // Generar datos cada 2 horas durante los últimos 6 meses
+            $startDate = Carbon::now()->subMonths(6); // Fecha de inicio para cada baliza
+            for ($i = 0; $i < 2190; $i++) { // 180 intervalos de 2 horas en 6 meses
+                $date = $startDate->copy()->addHours($i * 2); // Incrementar la fecha cada 2 horas
                 Clima::factory()->create([
-                    'baliza_id' => $baliza->id,
-                    'fecha' => $date->copy()->addHours($i * 2), // Incrementar la fecha cada 2 horas
+                    'baliza_id' => $baliza['id'], // Usar el ID de la baliza en lugar del id_aemet
+                    'fecha' => $date, // Usar la fecha calculada
                 ]);
             }
         }
     }
+}
 }

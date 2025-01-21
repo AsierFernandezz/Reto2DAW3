@@ -14,10 +14,12 @@ class ClimaFactory extends Factory
     public function definition(): array
     {
         // Obtener un ID de Balizas existente
-        $balizaId = Baliza::inRandomOrder()->first()->id; // Obtener un ID aleatorio de Balizas
+        $balizaId = Baliza::inRandomOrder()->first()->id;
 
-        // Obtener una fecha aleatoria en los últimos 6 meses
-        $date = Carbon::now()->subMonths(6)->addMinutes(rand(0, 180 * 24 * 60)); // 180 días en minutos
+        // Obtener una fecha aleatoria desde hace 6 meses hasta hoy
+        $startDate = Carbon::now()->subMonths(6)->startOfDay();
+        $endDate = Carbon::now()->endOfDay();
+        $date = Carbon::createFromTimestamp(rand($startDate->timestamp, $endDate->timestamp));
 
         // Redondear a intervalos de 2 horas
         $date->minute(0)->second(0);
@@ -29,44 +31,62 @@ class ClimaFactory extends Factory
         $month = $date->month;
         $hour = $date->hour;
 
-        // Ajustar rangos de temperatura según la estación
-        if ($month >= 12 || $month <= 2) { // Invierno
-            $minTemp = -5;
-            $maxTemp = 15;
+        // Ajustar rangos de temperatura según la estación de forma más suave
+        if ($month == 12 || $month <= 2) { // Invierno
+            $minTemp = 0;
+            $maxTemp = 12;
         } elseif ($month >= 3 && $month <= 5) { // Primavera
-            $minTemp = 5;
-            $maxTemp = 25;
-        } elseif ($month >= 6 && $month <= 8) { // Verano
-            $minTemp = 15;
-            $maxTemp = 40;
-        } else { // Otoño
-            $minTemp = 5;
+            $minTemp = 8;
             $maxTemp = 20;
+        } elseif ($month >= 6 && $month <= 8) { // Verano
+            $minTemp = 18;
+            $maxTemp = 35;
+        } else { // Otoño
+            $minTemp = 10;
+            $maxTemp = 22;
         }
 
-        // Ajustar temperatura según la hora del día
+        // Ajustar temperatura según la hora del día de forma más gradual
         if ($hour >= 0 && $hour < 6) { // Madrugada
-            $minTemp -= 3;
-            $maxTemp -= 5;
-        } elseif ($hour >= 6 && $hour < 12) { // Mañana
-            $minTemp += 2;
-            $maxTemp -= 2;
-        } elseif ($hour >= 12 && $hour < 18) { // Tarde
-            $minTemp += 5;
-            $maxTemp += 2;
-        } else { // Noche
             $minTemp -= 2;
             $maxTemp -= 3;
+        } elseif ($hour >= 6 && $hour < 12) { // Mañana
+            $minTemp += 1;
+            $maxTemp -= 1;
+        } elseif ($hour >= 12 && $hour < 18) { // Tarde
+            $minTemp += 3;
+            $maxTemp += 1;
+        } else { // Noche
+            $minTemp -= 1;
+            $maxTemp -= 2;
+        }
+
+        // Generar datos meteorológicos más realistas
+        $temperatura = $this->faker->randomFloat(1, $minTemp, $maxTemp);
+        $presion = $this->faker->randomFloat(1, 1000, 1020); // Rango más realista
+        $precipitaciones = $this->faker->randomFloat(1, 0, 25); // Menos precipitaciones extremas
+        $viento = $this->faker->randomFloat(0, 0, 80); // Velocidad del viento más realista
+
+        // Determinar el tiempo basado en las condiciones
+        $tiempo = 'Soleado';
+        if ($precipitaciones > 15) {
+            $tiempo = 'Tormentoso';
+        } elseif ($precipitaciones > 5) {
+            $tiempo = 'Lluvioso';
+        } elseif ($viento > 40) {
+            $tiempo = 'Nublado';
+        } elseif ($viento > 20) {
+            $tiempo = 'Parcialmente nublado';
         }
 
         return [
-            'temperatura' => $this->faker->randomFloat(1, $minTemp, $maxTemp),
-            'presion_atmosferica' => $this->faker->randomFloat(1, 980, 1030), // Presión atmosférica típica en hPa
-            'precipitaciones' => $this->faker->randomFloat(2, 0, 50), // Precipitaciones en mm
-            'viento' => $this->faker->randomFloat(1, 0, 120), // Velocidad del viento en km/h
-            'tiempo' => $this->faker->randomElement(['Soleado', 'Nublado', 'Lluvioso', 'Parcialmente nublado', 'Tormentoso']),
-            'fecha' => $date->format('Y-m-d H:i:s'), // Asegurarse de que la fecha incluya la hora
-            'baliza_id' => $balizaId, // Usar el ID de Balizas existente
+            'temperatura' => $temperatura,
+            'presion_atmosferica' => $presion,
+            'precipitaciones' => $precipitaciones,
+            'viento' => $viento,
+            'tiempo' => $tiempo,
+            'fecha' => $date,
+            'baliza_id' => $balizaId,
             'created_at' => $date,
             'updated_at' => $date,
         ];
