@@ -6,6 +6,7 @@ use Http;
 use Illuminate\Http\Request;
 use App\Models\Baliza;
 use App\Models\Clima;
+use Illuminate\Support\Facades\DB;
 
 class ClimaController extends Controller
 {
@@ -59,6 +60,23 @@ class ClimaController extends Controller
         $datosClimas = Clima::where('baliza_id', $baliza->id)->orderBy('fecha', 'desc')->get();
 
         return response()->json($datosClimas);
+    }
+
+    public function ultimaMedicionPorBaliza()
+    {
+        $ultimasMediciones = Clima::select('climas.*')
+            ->join(DB::raw('(
+                SELECT baliza_id, MAX(fecha) as max_fecha
+                FROM climas
+                GROUP BY baliza_id
+            ) as ultimas'), function($join) {
+                $join->on('climas.baliza_id', '=', 'ultimas.baliza_id')
+                    ->on('climas.fecha', '=', 'ultimas.max_fecha');
+            })
+            ->with('baliza')
+            ->get();
+
+        return response()->json($ultimasMediciones);
     }
 
 }
