@@ -1,0 +1,229 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    /* background: linear-gradient(135deg, #2c3e50, #3498db); */
+    background-color: #dee7e9;
+    color: #2c3e50;
+}
+
+.navbar {
+    background-color: #34495e;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#tabs {
+    margin: 30px auto;
+    max-width: 95%;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.ui-tabs-nav {
+    display: flex;
+    justify-content: center;
+    background: #34495e;
+    padding: 15px 0;
+    gap: 20px;
+}
+
+.ui-tabs-nav li {
+    margin: 0;
+}
+
+.ui-tabs-nav li a {
+    color: white !important;
+    font-weight: 500;
+    padding: 12px 25px;
+    background: #5d7a99;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ui-tabs-nav li a:hover {
+    background: #3498db;
+    transform: translateY(-2px);
+}
+
+.ui-tabs-nav li.ui-tabs-active a {
+    background: #3498db;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+#mapid {
+    height: 75vh;
+    width: 100vw;
+    margin: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.weather-info {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    margin: 5px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.weather-info h2 {
+    color: #2c3e50;
+    border-bottom: 4px solid #3498db;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.weather-day {
+    background: linear-gradient(135deg, #e0f7fa, #81d4fa);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.weather-day:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #81d4fa, #4fc3f7);
+}
+
+.weather-day p {
+    margin: 12px 0;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+.weather-day strong {
+    color: #34495e;
+    font-size: 18px;
+}
+
+.leaflet-popup-content {
+    font-family: 'Roboto', sans-serif;
+    background: rgba(255, 255, 255, 0.98);
+    line-height: 1.6;
+}
+
+.leaflet-popup-content b {
+    color: #2c3e50;
+    font-size: 18px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+.clima-card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin: 0;
+}
+
+.clima-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.clima-card .card-header {
+    padding: 1rem;
+    border-bottom: none;
+}
+
+.clima-card .card-title {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #fff;
+}
+
+.clima-card .card-title i {
+    margin-right: 10px;
+}
+
+.clima-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 0.5rem;
+}
+
+.clima-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.clima-item i {
+    font-size: 1.2rem;
+    width: 25px;
+    text-align: center;
+}
+
+/* Clases para diferentes estados del clima */
+.card-muy-calido {
+    background: linear-gradient(135deg, #ff4e50, #f9d423);
+    color: white;
+}
+
+.card-calido {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: white;
+}
+
+.card-templado {
+    background: linear-gradient(135deg, #9DC183, #C5E1A5);
+    color: white;
+}
+
+.card-frio {
+    background: linear-gradient(135deg, #2193b0, #6dd5ed);
+    color: white;
+}
+
+.card-muy-frio {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: white;
+}
+
+/* Añadir un contenedor grid para las cards del clima */
+#tiempo-actual {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.ultima-actualizacion {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.ultima-actualizacion i {
+    margin-right: 5px;
+}
