@@ -131,13 +131,18 @@ body {
 }
 
 .clima-card {
+    width: 380px;
+    height: 340px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     transition: all 0.3s ease;
     border: none;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    margin: 0;
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    color: white;
 }
 
 .clima-card:hover {
@@ -147,97 +152,105 @@ body {
 
 .clima-card .card-header {
     padding: 1rem;
-    border-bottom: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .clima-card .card-title {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: #fff;
+    display: flex;
+    align-items: center;
 }
 
 .clima-card .card-title i {
     margin-right: 10px;
 }
 
+.clima-card .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
 .clima-info {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    padding: 0.5rem;
-}
-
-@media (max-width: 768px) {
-    .clima-info {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 480px) {
-    .clima-info {
-        grid-template-columns: 1fr;
-    }
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 5px;
+    margin-bottom: 15px;
 }
 
 .clima-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
+    gap: 12px;
+    padding: 12px 15px;
+    height: 45px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.clima-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 .clima-item i {
-    font-size: 1.2rem;
-    width: 25px;
+    font-size: 1rem;
+    width: 20px;
     text-align: center;
+    flex-shrink: 0;
+}
+
+.clima-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Clases para diferentes estados del clima */
-.card-muy-calido {
-    background: linear-gradient(135deg, #ff4e50, #f9d423);
-    color: white;
-}
-
-.card-calido {
-    background: linear-gradient(135deg, #ff7e5f, #feb47b);
-    color: white;
-}
-
-.card-templado {
-    background: linear-gradient(135deg, #9DC183, #C5E1A5);
-    color: white;
-}
-
-.card-frio {
-    background: linear-gradient(135deg, #2193b0, #6dd5ed);
-    color: white;
-}
-
+.card-muy-calido,
+.card-calido,
+.card-templado,
+.card-frio,
 .card-muy-frio {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
+    background: linear-gradient(135deg, #34495e, #2c3e50);
     color: white;
 }
 
 /* Añadir un contenedor grid para las cards del clima */
 #tiempo-actual {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fill, 380px);
+    gap: 15px;
+    padding: 10px;
+    justify-content: center;
+    align-content: start;
+    overflow: hidden;
 }
 
 .ultima-actualizacion {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
     font-size: 0.9rem;
-    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: auto;
+    box-sizing: border-box;
 }
 
 .ultima-actualizacion i {
-    margin-right: 5px;
+    margin-right: 8px;
+    font-size: 0.9rem;
 }
 
 /* Estilos para el drag & drop */
@@ -270,7 +283,7 @@ body {
 .lista-atributos {
     min-height: 100px;
     padding: 10px;
-    border: 2px dashed #bdc3c7;
+    border: 1px solid #e1e4e8;
     border-radius: 8px;
 }
 
@@ -303,6 +316,7 @@ body {
 .lista-atributos.drag-over {
     background: rgba(52, 152, 219, 0.1);
     border-color: #3498db;
+    border-style: solid;
 }
 .loading-indicator {
     padding: 20px;
@@ -389,5 +403,83 @@ body {
     to {
         transform: translateX(100%);
         opacity: 0;
+    }
+}
+
+#tabs-2 {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    height: calc(100vh - 160px);
+    overflow: hidden;
+}
+
+.clima-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sidebar-drag-drop {
+    width: 300px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.lista-atributos {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 100px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.lista-atributos h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.1em;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 1200px) {
+    #tiempo-actual {
+        grid-template-columns: repeat(auto-fill, 380px);
+    }
+}
+
+@media (max-width: 768px) {
+    #tabs-2 {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .sidebar-drag-drop {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .clima-container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    #tiempo-actual {
+        grid-template-columns: 1fr;
+    }
+
+    .clima-card {
+        width: 100%;
+        height: auto;
+        min-height: 340px;
     }
 }

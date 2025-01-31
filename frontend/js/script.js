@@ -541,16 +541,40 @@ $(document).ready(function() {
 
     //funcion para obtener el icono adecuado según el tiempo que haga
     function obtenerIconoTiempo(tiempo) {
+        // Convertir a minúsculas para hacer la comparación insensible a mayúsculas
+        const tiempoLower = tiempo.toLowerCase();
+        
         const iconos = {
-            'Soleado': 'fas fa-sun',
-            'Parcialmente nublado': 'fas fa-cloud-sun',
-            'nubes': 'fas fa-cloud',
+            'soleado': 'fas fa-sun',
+            'sol': 'fas fa-sun',
+            'despejado': 'fas fa-sun',
+            'parcialmente nublado': 'fas fa-cloud-sun',
             'nubes dispersas': 'fas fa-cloud-sun',
+            'intervalos nubosos': 'fas fa-cloud-sun',
+            'nubes': 'fas fa-cloud',
+            'nublado': 'fas fa-cloud',
             'muy nuboso': 'fas fa-cloud',
-            'Lluvioso': 'fas fa-cloud-rain',
-            'Tormentoso': 'fas fa-bolt',
-            'Nieve': 'fas fa-snowflake'
+            'cubierto': 'fas fa-cloud',
+            'lluvia': 'fas fa-cloud-rain',
+            'lluvioso': 'fas fa-cloud-rain',
+            'chubascos': 'fas fa-cloud-rain',
+            'precipitaciones': 'fas fa-cloud-rain',
+            'tormenta': 'fas fa-bolt',
+            'tormentoso': 'fas fa-bolt',
+            'tormenta eléctrica': 'fas fa-bolt',
+            'nieve': 'fas fa-snowflake',
+            'nevado': 'fas fa-snowflake',
+            'aguanieve': 'fas fa-snowflake',
+            'niebla': 'fas fa-smog',
+            'bruma': 'fas fa-smog'
         };
-        return iconos[tiempo] || 'fas fa-cloud-sun';
+
+        // Buscar coincidencia en el objeto de iconos
+        for (let key in iconos) {
+            if (tiempoLower.includes(key)) {
+                return iconos[key];
+            }
+        }
+        return 'fas fa-cloud-sun';
     }
 });
