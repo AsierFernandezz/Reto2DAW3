@@ -19,6 +19,13 @@
         <span style='color:white; font-size:24px; margin-left:10px;'>Panel Meteorológico</span>
     </div>
 
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Actualizando datos...</span>
+        </div>
+    </div>
+
     <div id="tabs">
         <ul>
             <li><a href="#tabs-1">Mapa</a></li>
@@ -32,6 +39,37 @@
         <div id="tabs-2">
             <div class="info-meteorologica">
                 <h2>Información Meteorológica Actual</h2>
+                <div class="drag-drop-container">
+                    <div class="atributos-disponibles">
+                        <h4>Atributos Ocultos</h4>
+                        <div id="atributos-lista" class="lista-atributos">
+                            <!-- Los atributos se moverán aquí cuando estén inactivos -->
+                        </div>
+                    </div>
+                    <div class="atributos-activos">
+                        <h4>Atributos Visibles</h4>
+                        <div id="atributos-activos-lista" class="lista-atributos">
+                            <div class="atributo" draggable="true" data-tipo="temperatura">
+                                <i class="fas fa-thermometer-half"></i> Temperatura
+                            </div>
+                            <div class="atributo" draggable="true" data-tipo="humedad">
+                                <i class="fas fa-tint"></i> Humedad
+                            </div>
+                            <div class="atributo" draggable="true" data-tipo="viento">
+                                <i class="fas fa-wind"></i> Viento
+                            </div>
+                            <div class="atributo" draggable="true" data-tipo="presion_atmosferica">
+                                <i class="fas fa-compress-arrows-alt"></i> Presión Atmosférica
+                            </div>
+                            <div class="atributo" draggable="true" data-tipo="tiempo">
+                                <i class="fas fa-cloud-sun"></i> Tiempo
+                            </div>
+                            <div class="atributo" draggable="true" data-tipo="precipitaciones">
+                                <i class="fas fa-cloud-rain"></i> Precipitaciones
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="tiempo-actual"></div>
             </div>
         </div>
