@@ -10,6 +10,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('climas/ultima', [ClimaController::class, 'ultimaMedicionPorBaliza']);
+Route::get('historico/{baliza_id}', [ClimaController::class, 'historico']);
 Route::apiResource('climas', ClimaController::class);
 Route::apiResource('balizas', BalizaController::class);
 

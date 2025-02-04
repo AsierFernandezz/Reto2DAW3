@@ -79,4 +79,28 @@ class ClimaController extends Controller
         return response()->json($ultimasMediciones);
     }
 
+    public function historico($baliza_id, Request $request)
+    {
+        // Validar las fechas de inicio y fin
+        $request->validate([
+            'inicio' => 'required|date',
+            'fin' => 'required|date|after_or_equal:inicio'
+        ]);
+
+        $inicio = $request->inicio;
+        $fin = $request->fin;
+
+        // Obtener los datos históricos
+        $datosHistoricos = Clima::where('baliza_id', $baliza_id)
+            ->whereBetween('fecha', [$inicio, $fin])
+            ->orderBy('fecha', 'asc')
+            ->get();
+
+        if ($datosHistoricos->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron datos para el período especificado'], 404);
+        }
+
+        return response()->json($datosHistoricos);
+    }
+
 }

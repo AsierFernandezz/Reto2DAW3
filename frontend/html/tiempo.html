@@ -14,23 +14,31 @@
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 </head>
 <body>
-    <div class="navbar" style="display: flex; align-items: center; justify-content: flex-start;">
-        <i class='fas fa-cloud-sun-rain' style='font-size:48px; color:white'></i>
-        <span style='color:white; font-size:24px; margin-left:10px;'>Panel Meteorológico</span>
+    <div class="navbar">
+        <div class="navbar-left">
+            <i class='fas fa-cloud-sun-rain'></i>
+            <span data-translate="Panel Meteorológico">Panel Meteorológico</span>
+        </div>
+        <div class="navbar-right">
+            <select id="language-selector" class="language-selector">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+        </div>
     </div>
 
     <div id="notification" class="notification">
         <div class="notification-content">
             <i class="fas fa-spinner fa-spin"></i>
-            <span>Actualizando datos...</span>
+            <span data-translate="Actualizando datos">Actualizando datos...</span>
         </div>
     </div>
 
     <div id="tabs">
         <ul>
-            <li><a href="#tabs-1">Mapa</a></li>
-            <li><a href="#tabs-2">Clima</a></li>
-            <li><a href="#tabs-3">Gráfico</a></li>
+            <li><a href="#tabs-1" data-translate="Mapa">Mapa</a></li>
+            <li><a href="#tabs-2" data-translate="Clima">Clima</a></li>
+            <li><a href="#tabs-3" data-translate="Gráfico">Gráfico</a></li>
         </ul>
 
         <div id="tabs-1">
@@ -39,34 +47,34 @@
         <div id="tabs-2">
             <div class="sidebar-drag-drop">
                 <div class="lista-atributos" id="atributos-activos-lista">
-                    <h3>Atributos Visibles</h3>
+                    <h3 data-translate="Atributos Visibles">Atributos Visibles</h3>
                     <div class="atributo" data-tipo="temperatura">
                         <i class="fas fa-thermometer-half"></i>
-                        <span>Temperatura</span>
+                        <span data-translate="Temperatura">Temperatura</span>
                     </div>
                     <div class="atributo" data-tipo="humedad">
                         <i class="fas fa-tint"></i>
-                        <span>Humedad</span>
+                        <span data-translate="Humedad">Humedad</span>
                     </div>
                     <div class="atributo" data-tipo="viento">
                         <i class="fas fa-wind"></i>
-                        <span>Viento</span>
+                        <span data-translate="Viento">Viento</span>
                     </div>
                     <div class="atributo" data-tipo="presion_atmosferica">
                         <i class="fas fa-compress-arrows-alt"></i>
-                        <span>Presión Atmosférica</span>
+                        <span data-translate="Presión Atmosférica">Presión Atmosférica</span>
                     </div>
                     <div class="atributo" data-tipo="tiempo">
                         <i class="fas fa-cloud-sun"></i>
-                        <span>Tiempo</span>
+                        <span data-translate="Tiempo">Tiempo</span>
                     </div>
                     <div class="atributo" data-tipo="precipitaciones">
                         <i class="fas fa-cloud-rain"></i>
-                        <span>Precipitaciones</span>
+                        <span data-translate="Precipitaciones">Precipitaciones</span>
                     </div>
                 </div>
                 <div class="lista-atributos" id="atributos-lista">
-                    <h3>Atributos Ocultos</h3>
+                    <h3 data-translate="Atributos Ocultos">Atributos Ocultos</h3>
                 </div>
             </div>
             <div class="clima-container">
@@ -74,14 +82,36 @@
             </div>
         </div>
         <div id="tabs-3">
-            <div class="info-tiempo">
-                <h2>Pronóstico Extendido</h2>
-                <div id="pronostico"></div>
+            <div class="grafico-container">
+                <div class="grafico-controls">
+                    <div class="control-group">
+                        <label for="baliza-grafico" data-translate="seleccionar-baliza">Seleccionar baliza</label>
+                        <select id="baliza-grafico" class="form-control" required>
+                            <option value="" data-translate="seleccionar-baliza-placeholder">Seleccione una baliza</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="fecha-inicio-grafico" data-translate="fecha-inicio">Fecha de inicio</label>
+                        <input type="date" id="fecha-inicio-grafico" class="form-control" required>
+                    </div>
+                    <div class="control-group">
+                        <label for="fecha-fin-grafico" data-translate="fecha-fin">Fecha de fin</label>
+                        <input type="date" id="fecha-fin-grafico" class="form-control" required>
+                    </div>
+                    <button id="mostrar-grafico" class="btn btn-primary">
+                        <i class="fas fa-chart-line"></i> <span data-translate="mostrar-grafico">Mostrar Gráfico</span>
+                    </button>
+                </div>
+                <div class="grafico-wrapper">
+                    <canvas id="grafico-chart"></canvas>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/traduccion.js"></script>
     <script src="../js/script.js"></script>
 </body>
 </html>

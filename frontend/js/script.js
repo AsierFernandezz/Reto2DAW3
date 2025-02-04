@@ -1,5 +1,27 @@
+// Variables globales
+let balizasSeleccionadas = new Set();
+let datosClimaCache = {};
+let climaChart = null;
+let graficoChart = null;
+
 $(document).ready(function() {
-    $("#tabs").tabs();
+    $("#tabs").tabs({
+        activate: function(event, ui) {
+            if (ui.newPanel.attr('id') === 'tabs-3') {
+                console.log('Tab gráfico activado');
+                // Cargar las balizas inmediatamente al activar la pestaña
+                cargarBalizasGrafico().then(() => {
+                    console.log('Balizas cargadas para el gráfico');
+                    // Solo inicializar el gráfico si no existe
+                    if (!graficoChart) {
+                        initializeGraficoChart();
+                    }
+                    // Actualizar traducciones dinámicas
+                    updateDynamicTranslations();
+                });
+            }
+        }
+    });
     
     var map = L.map("mapid").setView([43.0, -2.5], 9);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -7,7 +29,6 @@ $(document).ready(function() {
     }).addTo(map);
 
     //se crea un set para guardar las balizas que el usuario ha seleccionado en el mapa
-    let balizasSeleccionadas = new Set();
     let markersMap = {};
     // Objeto para almacenar los datos del clima de cada baliza
     let datosClimaCache = {};
@@ -78,9 +99,9 @@ $(document).ready(function() {
     function crearIcono(tipo = 'blue') {
         return L.icon({
             iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${tipo}.png`,
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34]
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34]
         });
     }
 
@@ -166,7 +187,7 @@ $(document).ready(function() {
                             climaItems.push(`
                                 <div class="clima-item" data-tipo="temperatura">
                                     <i class="fas fa-thermometer-half"></i>
-                                    <span>${clima.temperatura}°C</span>
+                                    <span>${convertUnit(clima.temperatura, '°C')}${translations[currentLanguage]['°C']}</span>
                                 </div>
                             `);
                         }
@@ -175,7 +196,7 @@ $(document).ready(function() {
                             climaItems.push(`
                                 <div class="clima-item" data-tipo="humedad">
                                     <i class="fas fa-tint"></i>
-                                    <span>${clima.humedad}%</span>
+                                    <span>${clima.humedad}${translations[currentLanguage]['%']}</span>
                                 </div>
                             `);
                         }
@@ -184,7 +205,7 @@ $(document).ready(function() {
                             climaItems.push(`
                                 <div class="clima-item" data-tipo="viento">
                                     <i class="fas fa-wind"></i>
-                                    <span>${clima.viento} km/h</span>
+                                    <span>${convertUnit(clima.viento, 'km/h')}${translations[currentLanguage]['km/h']}</span>
                                 </div>
                             `);
                         }
@@ -193,7 +214,7 @@ $(document).ready(function() {
                             climaItems.push(`
                                 <div class="clima-item" data-tipo="presion_atmosferica">
                                     <i class="fas fa-compress-arrows-alt"></i>
-                                    <span>${clima.presion_atmosferica} hPa</span>
+                                    <span>${clima.presion_atmosferica}${translations[currentLanguage]['hPa']}</span>
                                 </div>
                             `);
                         }
@@ -202,7 +223,7 @@ $(document).ready(function() {
                             climaItems.push(`
                                 <div class="clima-item" data-tipo="tiempo">
                                     <i class="${obtenerIconoTiempo(clima.tiempo)}"></i>
-                                    <span>${clima.tiempo}</span>
+                                    <span>${translateWeather(clima.tiempo)}</span>
                                 </div>
                             `);
                         }
@@ -211,7 +232,7 @@ $(document).ready(function() {
                             climaItems.push(`
                                 <div class="clima-item" data-tipo="precipitaciones">
                                     <i class="fas fa-cloud-rain"></i>
-                                    <span>${clima.precipitaciones} mm</span>
+                                    <span>${convertUnit(clima.precipitaciones, 'mm')}${translations[currentLanguage]['mm']}</span>
                                 </div>
                             `);
                         }
@@ -220,11 +241,11 @@ $(document).ready(function() {
                         cardBody.innerHTML = `
                             ${climaItems.length > 0 ? 
                                 `<div class="clima-info">${climaItems.join('')}</div>` : 
-                                '<p class="text-center">No hay datos visibles</p>'
+                                '<p class="text-center" data-translate="No hay datos visibles">No hay datos visibles</p>'
                             }
                             <div class="ultima-actualizacion">
                                 <i class="far fa-clock"></i>
-                                Última actualización: ${new Date(clima.fecha).toLocaleString()}
+                                <span data-translate="Última actualización">Última actualización</span>: ${new Date(clima.fecha).toLocaleString(currentLanguage === 'es' ? 'es-ES' : 'en-US')}
                             </div>
                         `;
 
@@ -345,20 +366,20 @@ $(document).ready(function() {
                     const estaSeleccionada = balizaSeleccionada !== undefined;
                     const iconoBaliza = crearIcono(estaSeleccionada ? 'red' : 'blue');
 
-                    const marker = L.marker([baliza.latitud, baliza.longitud], {
-                        icon: iconoBaliza,
-                        id: `marker-${baliza.municipio.toLowerCase().replace(/\s+/g, '-')}`
+                const marker = L.marker([baliza.latitud, baliza.longitud], {
+                    icon: iconoBaliza,
+                    id: `marker-${baliza.municipio.toLowerCase().replace(/\s+/g, '-')}`
+                })
+                    .on("mouseover", function () {
+                        this.openPopup();
                     })
-                        .on("mouseover", function () {
-                            this.openPopup();
-                        })
-                        .on("mouseout", function () {
-                            this.closePopup();
-                        })
+                    .on("mouseout", function () {
+                        this.closePopup();
+                    })
                         .on("click", async function () {
                             const estaSeleccionada = Array.from(balizasSeleccionadas).some(b => b.id === baliza.id);
 
-                            if (estaSeleccionada) {
+                        if (estaSeleccionada) {
                                 // Eliminar la baliza usando el ID
                                 balizasSeleccionadas.forEach(b => {
                                     if (b.id === baliza.id) {
@@ -368,8 +389,8 @@ $(document).ready(function() {
                                     }
                                 });
                                 this.setIcon(crearIcono('blue'));
-                            } else {
-                                balizasSeleccionadas.add(baliza);
+                        } else {
+                            balizasSeleccionadas.add(baliza);
                                 this.setIcon(crearIcono('red'));
                                 
                                 // Obtener y almacenar los datos del clima
@@ -378,10 +399,10 @@ $(document).ready(function() {
                             
                             // Guardar el estado actual de las balizas
                             guardarBalizas();
-                            actualizarInformacionClimatica();
-                        })
-                        .bindPopup(`<b>${baliza.municipio}</b>`)
-                        .addTo(map);
+                        actualizarInformacionClimatica();
+                    })
+                    .bindPopup(`<b>${baliza.municipio}</b>`)
+                    .addTo(map);
 
                     // Guardar referencia al marker
                     markersMap[baliza.id] = marker;
@@ -396,16 +417,16 @@ $(document).ready(function() {
                 if (balizasSeleccionadas.size > 0) {
                     actualizarInformacionClimatica();
                 }
-                
-                //cada vez que se cambia de pestaña de tabs, comprueba si es la pestaña de clima(tabs-2) y actualiza la información del clima
-                $("#tabs").on("tabsactivate", function(event, ui) {
-                    if (ui.newPanel.attr('id') === 'tabs-2') {
-                        actualizarInformacionClimatica();
-                    }
-                });
-                
+            
+            //cada vez que se cambia de pestaña de tabs, comprueba si es la pestaña de clima(tabs-2) y actualiza la información del clima
+            $("#tabs").on("tabsactivate", function(event, ui) {
+                if (ui.newPanel.attr('id') === 'tabs-2') {
+                    actualizarInformacionClimatica();
+                }
+            });
+            
                 // Función para actualizar la visualización de las cards
-                async function actualizarInformacionClimatica() {
+            async function actualizarInformacionClimatica() {
                     if (balizasSeleccionadas.size === 0) {
                         $("#tiempo-actual").html('<p>No hay balizas seleccionadas</p>');
                         return;
@@ -421,10 +442,10 @@ $(document).ready(function() {
                         const contenidoHTML = Array.from(balizasSeleccionadas).map(baliza => {
                             try {
                                 const clima = datosClima.find(d => d.baliza_id === baliza.id);
-                                
-                                if (!clima) {
-                                    throw new Error('No se encontraron datos para esta baliza');
-                                }
+                        
+                        if (!clima) {
+                            throw new Error('No se encontraron datos para esta baliza');
+                        }
 
                                 // Determinar el color de fondo basado en la temperatura
                                 let fondo = 'card-templado';
@@ -443,7 +464,7 @@ $(document).ready(function() {
                                     climaItems.push(`
                                         <div class="clima-item" data-tipo="temperatura">
                                             <i class="fas fa-thermometer-half"></i>
-                                            <span>${clima.temperatura}°C</span>
+                                            <span>${convertUnit(clima.temperatura, '°C')}${translations[currentLanguage]['°C']}</span>
                                         </div>
                                     `);
                                 }
@@ -452,7 +473,7 @@ $(document).ready(function() {
                                     climaItems.push(`
                                         <div class="clima-item" data-tipo="humedad">
                                             <i class="fas fa-tint"></i>
-                                            <span>${clima.humedad}%</span>
+                                            <span>${clima.humedad}${translations[currentLanguage]['%']}</span>
                                         </div>
                                     `);
                                 }
@@ -461,7 +482,7 @@ $(document).ready(function() {
                                     climaItems.push(`
                                         <div class="clima-item" data-tipo="viento">
                                             <i class="fas fa-wind"></i>
-                                            <span>${clima.viento} km/h</span>
+                                            <span>${convertUnit(clima.viento, 'km/h')}${translations[currentLanguage]['km/h']}</span>
                                         </div>
                                     `);
                                 }
@@ -470,7 +491,7 @@ $(document).ready(function() {
                                     climaItems.push(`
                                         <div class="clima-item" data-tipo="presion_atmosferica">
                                             <i class="fas fa-compress-arrows-alt"></i>
-                                            <span>${clima.presion_atmosferica} hPa</span>
+                                            <span>${clima.presion_atmosferica}${translations[currentLanguage]['hPa']}</span>
                                         </div>
                                     `);
                                 }
@@ -479,7 +500,7 @@ $(document).ready(function() {
                                     climaItems.push(`
                                         <div class="clima-item" data-tipo="tiempo">
                                             <i class="${obtenerIconoTiempo(clima.tiempo)}"></i>
-                                            <span>${clima.tiempo}</span>
+                                            <span>${translateWeather(clima.tiempo)}</span>
                                         </div>
                                     `);
                                 }
@@ -488,45 +509,45 @@ $(document).ready(function() {
                                     climaItems.push(`
                                         <div class="clima-item" data-tipo="precipitaciones">
                                             <i class="fas fa-cloud-rain"></i>
-                                            <span>${clima.precipitaciones} mm</span>
+                                            <span>${convertUnit(clima.precipitaciones, 'mm')}${translations[currentLanguage]['mm']}</span>
                                         </div>
                                     `);
-                                }
-
-                                return `
-                                    <div class="card mb-3 clima-card ${fondo}">
-                                        <div class="card-header">
-                                            <h5 class="card-title">
-                                                <i class="fas fa-map-marker-alt"></i> 
-                                                ${baliza.municipio}
-                                                <i class="${obtenerIconoTiempo(clima.tiempo)}" style="margin-left: 10px;"></i>
-                                            </h5>
-                                        </div>
-                                        <div class="card-body">
+                        }
+                        
+                        return `
+                            <div class="card mb-3 clima-card ${fondo}">
+                                <div class="card-header">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-map-marker-alt"></i> 
+                                        ${baliza.municipio}
+                                        <i class="${obtenerIconoTiempo(clima.tiempo)}" style="margin-left: 10px;"></i>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
                                             ${climaItems.length > 0 ? 
                                                 `<div class="clima-info">${climaItems.join('')}</div>` : 
-                                                '<p class="text-center">No hay datos visibles</p>'
+                                                '<p class="text-center" data-translate="No hay datos visibles">No hay datos visibles</p>'
                                             }
                                             <div class="ultima-actualizacion">
                                                 <i class="far fa-clock"></i>
-                                                Última actualización: ${new Date(clima.fecha).toLocaleString()}
-                                            </div>
-                                        </div>
+                                                <span data-translate="Última actualización">Última actualización</span>: ${new Date(clima.fecha).toLocaleString(currentLanguage === 'es' ? 'es-ES' : 'en-US')}
                                     </div>
-                                `;
-                            } catch (error) {
+                                </div>
+                            </div>
+                        `;
+                    } catch (error) {
                                 console.error(`Error procesando datos para ${baliza.municipio}:`, error);
-                                return `
-                                    <div class="card mb-3">
-                                        <div class="card-header">
-                                            <h5 class="card-title">${baliza.municipio}</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">Error al cargar los datos</p>
-                                        </div>
-                                    </div>
-                                `;
-                            }
+                        return `
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="card-title">${baliza.municipio}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">Error al cargar los datos</p>
+                                </div>
+                            </div>
+                        `;
+                    }
                         });
                         
                         $("#tiempo-actual").html(contenidoHTML.join(''));
@@ -534,10 +555,10 @@ $(document).ready(function() {
                         console.error('Error al actualizar información climática:', error);
                         $("#tiempo-actual").html('<p>Error al cargar los datos</p>');
                     }
-                }
-            })
-            .catch((error) => console.error("Error obteniendo datos:", error));
-    });
+            }
+        })
+        .catch((error) => console.error("Error obteniendo datos:", error));
+});
 
     //funcion para obtener el icono adecuado según el tiempo que haga
     function obtenerIconoTiempo(tiempo) {
@@ -577,4 +598,315 @@ $(document).ready(function() {
         }
         return 'fas fa-cloud-sun';
     }
+
+    // Función para cargar las balizas en el selector
+    async function cargarBalizas() {
+        try {
+            const response = await fetch('http://localhost:85/api/balizas');
+            if (!response.ok) throw new Error('Error al obtener las balizas');
+            
+            const balizas = await response.json();
+            const selector = document.getElementById('baliza-selector');
+            
+            // Limpiar opciones existentes
+            selector.innerHTML = '<option value="" data-translate="seleccionar-baliza-placeholder">Seleccione una baliza</option>';
+            
+            // Añadir las balizas al selector
+            balizas.forEach(baliza => {
+                const option = document.createElement('option');
+                option.value = baliza.id;
+                option.textContent = baliza.municipio;
+                selector.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error al cargar las balizas:', error);
+        }
+    }
+
+    // Función para inicializar el gráfico
+    function initializeGraficoChart() {
+        console.log('Inicializando gráfico...');
+        
+        const canvas = document.getElementById('grafico-chart');
+        if (!canvas) {
+            console.error('No se encontró el elemento canvas del gráfico');
+            return;
+        }
+
+        // Si el gráfico ya existe y está inicializado, no es necesario volver a crearlo
+        if (graficoChart) {
+            console.log('El gráfico ya está inicializado');
+            return;
+        }
+
+        const ctx = canvas.getContext('2d');
+
+        // Configurar fechas por defecto
+        const hoy = new Date();
+        const hace7Dias = new Date(hoy);
+        hace7Dias.setDate(hoy.getDate() - 7);
+
+        const formatearFecha = (fecha) => {
+            return fecha.toISOString().split('T')[0];
+        };
+
+        document.getElementById('fecha-inicio-grafico').value = formatearFecha(hace7Dias);
+        document.getElementById('fecha-fin-grafico').value = formatearFecha(hoy);
+
+        // Crear el gráfico con dos datasets
+        graficoChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: translations[currentLanguage]['temperatura'],
+                        data: [],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        yAxisID: 'y-temperatura',
+                        tension: 0.4
+                    },
+                    {
+                        label: translations[currentLanguage]['humedad'],
+                        data: [],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        yAxisID: 'y-humedad',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: "'Roboto', sans-serif",
+                                size: 14
+                            },
+                            color: '#2c3e50'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: translations[currentLanguage]['grafico-atributo'],
+                        font: {
+                            family: "'Roboto', sans-serif",
+                            size: 16,
+                            weight: 'bold'
+                        },
+                        color: '#2c3e50',
+                        padding: 20
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: translations[currentLanguage]['fecha'],
+                            font: {
+                                family: "'Roboto', sans-serif",
+                                size: 14
+                            }
+                        }
+                    },
+                    'y-temperatura': {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: translations[currentLanguage]['temperatura'] + ' (' + translations[currentLanguage]['°C'] + ')',
+                            color: '#e74c3c',
+                            font: {
+                                family: "'Roboto', sans-serif",
+                                size: 14
+                            }
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + (currentLanguage === 'en' ? '°F' : '°C');
+                            }
+                        }
+                    },
+                    'y-humedad': {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: translations[currentLanguage]['humedad'] + ' (' + translations[currentLanguage]['%'] + ')',
+                            color: '#3498db',
+                            font: {
+                                family: "'Roboto', sans-serif",
+                                size: 14
+                            }
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Función para cargar datos del gráfico
+    async function cargarDatosGrafico(balizaId, fechaInicio, fechaFin) {
+        try {
+            console.log('Cargando datos del gráfico...', { balizaId, fechaInicio, fechaFin });
+            
+            // Formatear las fechas para la API
+            const inicio = fechaInicio + ' 00:00:00';
+            const fin = fechaFin + ' 23:59:59';
+            
+            const response = await fetch(`http://localhost:85/api/historico/${balizaId}?inicio=${inicio}&fin=${fin}`);
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Error al obtener datos históricos');
+            }
+
+            const datos = await response.json();
+            console.log('Datos recibidos:', datos);
+
+            if (datos.length === 0) {
+                alert(translations[currentLanguage]["no-datos"]);
+                return;
+            }
+            
+            // Procesar los datos
+            const fechas = datos.map(d => new Date(d.fecha).toLocaleDateString());
+            const temperaturas = datos.map(d => parseFloat(d.temperatura));
+            const humedades = datos.map(d => parseFloat(d.humedad));
+
+            // Obtener el nombre de la baliza seleccionada
+            const balizaSeleccionada = document.getElementById('baliza-grafico').options[
+                document.getElementById('baliza-grafico').selectedIndex
+            ]?.text || '';
+
+            console.log('Actualizando gráfico con:', { fechas, temperaturas, humedades, balizaSeleccionada });
+
+            // Actualizar el título
+            graficoChart.options.plugins.title.text = `Temperatura y Humedad - ${balizaSeleccionada}`;
+
+            // Actualizar los datos del gráfico
+            graficoChart.data.labels = fechas;
+            graficoChart.data.datasets[0].data = temperaturas;
+            graficoChart.data.datasets[1].data = humedades;
+
+            graficoChart.update();
+        } catch (error) {
+            console.error('Error:', error);
+            alert(translations[currentLanguage]["error-datos"]);
+        }
+    }
+
+    // Event listener para el botón de mostrar gráfico
+    $(document).on('click', '#mostrar-grafico', function() {
+        console.log('Click en mostrar gráfico');
+        const balizaId = document.getElementById('baliza-grafico').value;
+        const fechaInicio = document.getElementById('fecha-inicio-grafico').value;
+        const fechaFin = document.getElementById('fecha-fin-grafico').value;
+
+        console.log('Valores obtenidos:', { balizaId, fechaInicio, fechaFin });
+        
+        if (!balizaId || !fechaInicio || !fechaFin) {
+            alert(translations[currentLanguage]["seleccionar-todos"]);
+            return;
+        }
+        
+        if (new Date(fechaInicio) >= new Date(fechaFin)) {
+            alert(translations[currentLanguage]["error-fechas"]);
+            return;
+        }
+        
+        cargarDatosGrafico(balizaId, fechaInicio, fechaFin);
+    });
+
+    // Función para cargar las balizas en el selector
+    async function cargarBalizasGrafico() {
+        try {
+            console.log('Cargando balizas para el gráfico...');
+            const response = await fetch('http://localhost:85/api/balizas');
+            if (!response.ok) throw new Error('Error al obtener las balizas');
+            
+            const balizas = await response.json();
+            console.log('Balizas obtenidas:', balizas);
+            
+            const selector = document.getElementById('baliza-grafico');
+            if (!selector) {
+                console.error('No se encontró el selector de balizas');
+                return;
+            }
+            
+            // Limpiar opciones existentes
+            selector.innerHTML = `<option value="" data-translate="seleccionar-baliza-placeholder">${translations[currentLanguage]['seleccionar-baliza-placeholder']}</option>`;
+            
+            // Añadir las balizas al selector
+            balizas.forEach(baliza => {
+                const option = document.createElement('option');
+                option.value = baliza.id;
+                option.textContent = baliza.municipio;
+                selector.appendChild(option);
+            });
+            
+            console.log('Selector de balizas actualizado');
+        } catch (error) {
+            console.error('Error al cargar las balizas:', error);
+        }
+    }
+
+    // Event listener para cambios de idioma
+    document.addEventListener('languageChanged', function(event) {
+        console.log('Idioma cambiado a:', event.detail.language);
+        
+        // Si el gráfico existe, actualizar sus textos
+        if (graficoChart) {
+            const balizaSeleccionada = document.getElementById('baliza-grafico').options[
+                document.getElementById('baliza-grafico').selectedIndex
+            ]?.text || '';
+
+            // Actualizar título del gráfico
+            graficoChart.options.plugins.title.text = balizaSeleccionada ? 
+                `${translations[currentLanguage]['temperatura-humedad']} - ${balizaSeleccionada}` :
+                translations[currentLanguage]['grafico-atributo'];
+
+            // Actualizar etiquetas de los ejes
+            graficoChart.options.scales['y-temperatura'].title.text = translations[currentLanguage]['temperatura'] + ' (' + translations[currentLanguage]['°C'] + ')';
+            graficoChart.options.scales['y-humedad'].title.text = translations[currentLanguage]['humedad'] + ' (' + translations[currentLanguage]['%'] + ')';
+            
+            // Actualizar etiquetas de los datasets
+            graficoChart.data.datasets[0].label = translations[currentLanguage]['temperatura'];
+            graficoChart.data.datasets[1].label = translations[currentLanguage]['humedad'];
+
+            // Actualizar etiqueta del eje X
+            graficoChart.options.scales.x.title.text = translations[currentLanguage]['fecha'];
+
+            // Actualizar los ticks del eje Y de temperatura
+            graficoChart.options.scales['y-temperatura'].ticks.callback = function(value) {
+                return value + (currentLanguage === 'en' ? '°F' : '°C');
+            };
+
+            graficoChart.update('none'); // Actualizar sin animación para evitar parpadeos
+        }
+
+        // Actualizar la información climática si existe la función
+        if (typeof actualizarInformacionClimatica === 'function') {
+            actualizarInformacionClimatica();
+        }
+    });
 });
