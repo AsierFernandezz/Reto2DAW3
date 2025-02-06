@@ -717,3 +717,102 @@ body {
         min-height: 400px;
     }
 }
+
+/* Estilo para el nombre del municipio */
+.municipio-nombre {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 2px 4px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.municipio-nombre:hover {
+    color: #3498db;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilos para el tooltip */
+.pronostico-tooltip-container {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    max-width: 320px;
+    z-index: 9999;
+    border: none;
+    pointer-events: auto !important;
+}
+
+.pronostico-tooltip {
+    pointer-events: auto;
+}
+
+.pronostico-tooltip h4 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    text-align: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.pronostico-detalles {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pronostico-detalles p {
+    margin: 0;
+    color: #34495e;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.pronostico-detalles p:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.pronostico-detalles i {
+    width: 24px;
+    text-align: center;
+    color: #3498db;
+}
+
+.loading-tooltip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    color: #3498db;
+}
+
+.loading-tooltip i {
+    font-size: 1.2rem;
+}
+
+.error-tooltip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #e74c3c;
+    padding: 15px;
+    text-align: center;
+    font-size: 1rem;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 8px;
+}
+
+.error-tooltip i {
+    font-size: 1.2rem;
+}
+
+/* Asegurar que el tooltip esté por encima de otros elementos */
+.ui-tooltip {
+    z-index: 9999 !important;
+}

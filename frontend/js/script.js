@@ -512,42 +512,42 @@ $(document).ready(function() {
                                             <span>${convertUnit(clima.precipitaciones, 'mm')}${translations[currentLanguage]['mm']}</span>
                                         </div>
                                     `);
-                        }
-                        
-                        return `
-                            <div class="card mb-3 clima-card ${fondo}">
-                                <div class="card-header">
-                                    <h5 class="card-title">
-                                        <i class="fas fa-map-marker-alt"></i> 
-                                        ${baliza.municipio}
-                                        <i class="${obtenerIconoTiempo(clima.tiempo)}" style="margin-left: 10px;"></i>
-                                    </h5>
-                                </div>
-                                <div class="card-body">
-                                            ${climaItems.length > 0 ? 
-                                                `<div class="clima-info">${climaItems.join('')}</div>` : 
-                                                '<p class="text-center" data-translate="No hay datos visibles">No hay datos visibles</p>'
-                                            }
+                                }
+
+                                return `
+                                    <div class="card mb-3 clima-card ${fondo}">
+                                        <div class="card-header">
+                                            <h5 class="card-title">
+                                                <i class="fas fa-map-marker-alt"></i> 
+                                                        <span class="municipio-nombre" data-municipio="${baliza.municipio}">${baliza.municipio}</span>
+                                                <i class="${obtenerIconoTiempo(clima.tiempo)}" style="margin-left: 10px;"></i>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                                    ${climaItems.length > 0 ? 
+                                                        `<div class="clima-info">${climaItems.join('')}</div>` : 
+                                                        '<p class="text-center" data-translate="No hay datos visibles">No hay datos visibles</p>'
+                                                    }
                                             <div class="ultima-actualizacion">
                                                 <i class="far fa-clock"></i>
-                                                <span data-translate="Última actualización">Última actualización</span>: ${new Date(clima.fecha).toLocaleString(currentLanguage === 'es' ? 'es-ES' : 'en-US')}
+                                                        <span data-translate="Última actualización">Última actualización</span>: ${new Date(clima.fecha).toLocaleString(currentLanguage === 'es' ? 'es-ES' : 'en-US')}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        `;
-                    } catch (error) {
+                                `;
+                            } catch (error) {
                                 console.error(`Error procesando datos para ${baliza.municipio}:`, error);
-                        return `
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h5 class="card-title">${baliza.municipio}</h5>
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text">Error al cargar los datos</p>
-                                </div>
-                            </div>
-                        `;
-                    }
+                                return `
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h5 class="card-title">${baliza.municipio}</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">Error al cargar los datos</p>
+                                        </div>
+                                    </div>
+                                `;
+                            }
                         });
                         
                         $("#tiempo-actual").html(contenidoHTML.join(''));
@@ -908,5 +908,176 @@ $(document).ready(function() {
         if (typeof actualizarInformacionClimatica === 'function') {
             actualizarInformacionClimatica();
         }
+    });
+
+    // Función para obtener el pronóstico de Euskalmet
+    async function obtenerForecast(baliza) {
+        try {
+            const CIUDADES = {
+                1: { nombre: 'donostia', zona: 'donostialdea' },
+                2: { nombre: 'irun', zona: 'coast_zone' },          
+                3: { nombre: 'errenteria', zona: 'donostialdea' },  
+                4: { nombre: 'bilbao', zona: 'great_bilbao' }, 
+                5: { nombre: 'gasteiz', zona: 'vitoria_gasteiz' }      
+            };
+
+            const ciudad = CIUDADES[baliza.id];
+            if (!ciudad) throw new Error(translations[currentLanguage]['ciudad-no-encontrada']);
+
+            const fechaMañana = new Date();
+            fechaMañana.setDate(fechaMañana.getDate() + 1);
+            const fechaHoy = new Date().toISOString().split('T')[0].split('-');
+            const fechaMañanaStr = fechaMañana.toISOString().split('T')[0].replace(/-/g, '');
+
+            const url = `https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/${ciudad.zona}/locations/${ciudad.nombre}/forecast/at/${fechaHoy[0]}/${fechaHoy[1]}/${fechaHoy[2]}/for/${fechaMañanaStr}`;
+
+            console.log('Intentando obtener forecast de:', url);
+
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtZXQwMS5hcGlrZXkiLCJpc3MiOiJJRVMgUExBSUFVTkRJIEJISSBJUlVOIiwiZXhwIjoyMjM4MTMxMDAyLCJ2ZXJzaW9uIjoiMS4wLjAiLCJpYXQiOjE3MzM5ODgyMTAsImVtYWlsIjoiaWtjdHNAcGxhaWF1bmRpLm5ldCJ9.tbwG0cjPse3hTlZTiIYsC0GAw1JlcUCiCBaIMuFGsmxOeBdpPcI1J5nLS6vl805S8XhpSZvLLVpWt0G_jxaHFVH9D7fFFWmwcRP4OQM2XRrZH_7vMIcd5SR7AyjVWuiIb8NRt8JOE_WY4TStKwFfG5eClHZZ_AReJ1Xx4usuLVr2a9Opu2rbc3Vmzwl_VnX-5qHVaJFVe_Qf6CsDhAzpcqsLsWUiCq0soWIMEjfGtX1taFW6WOgy3ru0YD0hviLUOEHloNMxwum-bRXa2ukcsGl4eCjgu7fGxT3soR3_wxa0F4M6aPjp5haeA31_KqVDuwOviUmCrKScy5vyVUCMng'
+                }
+            });
+
+            if (!response.ok) {
+                console.error('Error en la respuesta:', response.status, response.statusText);
+                throw new Error(`${translations[currentLanguage]['error-api']}: ${response.status}`);
+            }
+
+            const buffer = await response.arrayBuffer();
+            const decoder = new TextDecoder('iso-8859-1');
+            const data = JSON.parse(decoder.decode(buffer));
+
+            if (!data || !data.forecastText || !data.forecastText.SPANISH) {
+                console.error('Datos inválidos recibidos:', data);
+                throw new Error(translations[currentLanguage]['formato-invalido']);
+            }
+
+            // Decodificar caracteres especiales y formatear el texto
+            let forecast = data.forecastText.SPANISH;
+            
+            // Reemplazar caracteres especiales comunes
+            forecast = forecast.replace(/&aacute;/g, 'á')
+                             .replace(/&eacute;/g, 'é')
+                             .replace(/&iacute;/g, 'í')
+                             .replace(/&oacute;/g, 'ó')
+                             .replace(/&uacute;/g, 'ú')
+                             .replace(/&ntilde;/g, 'ñ')
+                             .replace(/&Aacute;/g, 'Á')
+                             .replace(/&Eacute;/g, 'É')
+                             .replace(/&Iacute;/g, 'Í')
+                             .replace(/&Oacute;/g, 'Ó')
+                             .replace(/&Uacute;/g, 'Ú')
+                             .replace(/&Ntilde;/g, 'Ñ')
+                             .replace(/&quot;/g, '"')
+                             .replace(/&amp;/g, '&')
+                             .replace(/&lt;/g, '<')
+                             .replace(/&gt;/g, '>')
+                             .replace(/&#39;/g, "'")
+                             .replace(/\n/g, '\n\n')
+                             .replace(/\s+/g, ' ')
+                             .trim();
+
+            // Formatear el texto para mejor legibilidad
+            forecast = `📅 ${baliza.municipio}\n\n${forecast}`;
+
+            return forecast;
+        } catch (error) {
+            console.error('Error detallado al obtener forecast:', error);
+            return translations[currentLanguage]['pronostico-no-disponible'];
+        }
+    }
+
+    let isOverTooltip = false;
+    let isOverMunicipio = false;
+
+    // Manejar eventos del tooltip
+    $(document).on('mouseenter', '.municipio-nombre', async function(e) {
+        e.preventDefault();
+        const municipio = $(this).data('municipio');
+        const elemento = $(this);
+        isOverMunicipio = true;
+        
+        // Evitar múltiples tooltips
+        if (elemento.data('tooltip-activo')) {
+            return;
+        }
+        elemento.data('tooltip-activo', true);
+        
+        try {
+            elemento.tooltip({
+                items: '.municipio-nombre',
+                content: '<div class="loading-tooltip"><i class="fas fa-spinner fa-spin"></i> Cargando pronóstico...</div>',
+                position: { 
+                    my: "center bottom",
+                    at: "center top-10",
+                    collision: "flipfit"
+                },
+                tooltipClass: "pronostico-tooltip-container",
+                show: { effect: "fadeIn", duration: 200 },
+                hide: { effect: "fadeOut", duration: 200 },
+                close: function() {
+                    elemento.data('tooltip-activo', false);
+                }
+            }).tooltip("open");
+
+            const baliza = Array.from(balizasSeleccionadas).find(b => b.municipio === municipio);
+            if (!baliza) throw new Error(translations[currentLanguage]['baliza-no-encontrada']);
+
+            const forecast = await obtenerForecast(baliza);
+            
+            const contenidoTooltip = `
+                <div class="pronostico-tooltip">
+                    <div class="pronostico-detalles">
+                        <p style="white-space: pre-line;">${forecast}</p>
+                    </div>
+                </div>
+            `;
+            
+            if (elemento.data('tooltip-activo')) {
+                elemento.tooltip('option', 'content', contenidoTooltip);
+            }
+            
+        } catch (error) {
+            console.error('Error al obtener el pronóstico:', error);
+            if (elemento.data('tooltip-activo')) {
+                elemento.tooltip('option', 'content', `
+                    <div class="error-tooltip">
+                        <i class="fas fa-exclamation-circle"></i>
+                        ${error.message || translations[currentLanguage]['error-pronostico']}
+                    </div>
+                `);
+            }
+        }
+    });
+
+    // Manejar el evento mouseleave para el municipio
+    $(document).on('mouseleave', '.municipio-nombre', function() {
+        const elemento = $(this);
+        isOverMunicipio = false;
+        
+        setTimeout(() => {
+            if (!isOverTooltip && !isOverMunicipio) {
+                elemento.tooltip('close');
+                elemento.data('tooltip-activo', false);
+            }
+        }, 100);
+    });
+
+    // Manejar eventos para el tooltip
+    $(document).on('mouseenter', '.ui-tooltip', function() {
+        isOverTooltip = true;
+    });
+
+    $(document).on('mouseleave', '.ui-tooltip', function() {
+        isOverTooltip = false;
+        const elemento = $('.municipio-nombre[data-tooltip-activo]');
+        
+        setTimeout(() => {
+            if (!isOverTooltip && !isOverMunicipio) {
+                elemento.tooltip('close');
+                elemento.data('tooltip-activo', false);
+            }
+        }, 100);
     });
 });
