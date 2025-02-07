@@ -311,12 +311,12 @@ body {
 /* Añadir un contenedor grid para las cards del clima */
 #tiempo-actual {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 380px);
-    gap: 15px;
-    padding: 10px;
-    justify-content: center;
-    align-content: start;
-    overflow: hidden;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 15px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .ultima-actualizacion {
@@ -503,7 +503,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 .sidebar-drag-drop {
@@ -537,36 +537,138 @@ body {
 /* Media queries para responsividad */
 @media (max-width: 1200px) {
     #tiempo-actual {
-        grid-template-columns: repeat(auto-fill, 380px);
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .clima-card {
+        width: 100%;
+        height: auto;
+        min-height: 320px;
+    }
+
+    .clima-info {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     #tabs-2 {
         flex-direction: column;
-        height: auto;
+        padding: 10px;
     }
 
     .sidebar-drag-drop {
         width: 100%;
         min-width: 0;
+        margin-bottom: 15px;
+        flex-shrink: 0;
     }
 
     .clima-container {
         width: 100%;
+        overflow-y: auto;
+    }
+
+    #tiempo-actual {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 10px;
+        max-width: 800px;
+    }
+
+    .clima-card {
+        min-height: 300px;
+    }
+
+    .clima-item {
+        padding: 10px;
+        height: 40px;
+        font-size: 0.9rem;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    #tabs-2 {
+        height: 100%;
+        overflow: visible;
+    }
+
+    .clima-container {
+        overflow-y: visible;
+    }
+
+    #tiempo-actual {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        max-width: 500px;
+        padding: 10px;
+    }
+
+    .clima-card {
+        min-height: 300px;
+    }
+
+    .clima-info {
+        gap: 8px;
+    }
+
+    .clima-item {
+        padding: 8px;
+        height: 36px;
+        font-size: 0.85rem;
+    }
+
+    .card-header h5 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
     #tiempo-actual {
         grid-template-columns: 1fr;
     }
 
     .clima-card {
         width: 100%;
-        height: auto;
-        min-height: 340px;
+        min-height: 260px;
     }
+
+    .clima-info {
+        grid-template-columns: 1fr;
+    }
+
+    .clima-item {
+        height: 34px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Estilos del scrollbar */
+.clima-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.clima-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.clima-container::-webkit-scrollbar-thumb {
+    background: rgba(52, 152, 219, 0.5);
+    border-radius: 4px;
+}
+
+.clima-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(52, 152, 219, 0.7);
+}
+
+/* Soporte para Firefox */
+.clima-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(52, 152, 219, 0.5) rgba(0, 0, 0, 0.1);
 }
 
 .clima-card.card-templado .card-header {

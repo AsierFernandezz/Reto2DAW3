@@ -16,6 +16,7 @@ const translations = {
         "Última actualización": "Última actualización",
         "No hay balizas seleccionadas": "No hay balizas seleccionadas",
         "Error al cargar los datos": "Error al cargar los datos",
+        "No se ha seleccionado información": "No se ha seleccionado información",
         // Estados del tiempo
         "soleado": "soleado",
         "sol": "sol",
@@ -78,6 +79,7 @@ const translations = {
         "Última actualización": "Last update",
         "No hay balizas seleccionadas": "No markers selected",
         "Error al cargar los datos": "Error loading data",
+        "No se ha seleccionado información": "No information has been selected",
         // Estados del tiempo
         "soleado": "sunny",
         "sol": "sun",
@@ -128,7 +130,7 @@ const translations = {
 let currentLanguage = 'es';
 
 // Función para actualizar las traducciones de elementos dinámicos
-function updateDynamicTranslations() {
+function traducirPagina() {
     // Actualizar placeholder del selector de baliza
     const balizaSelector = document.getElementById('baliza-grafico');
     if (balizaSelector && balizaSelector.options.length > 0) {
