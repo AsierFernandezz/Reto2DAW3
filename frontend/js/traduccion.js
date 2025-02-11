@@ -1,6 +1,5 @@
 const translations = {
     es: {
-        "Panel Meteorológico": "Panel Meteorológico",
         "Mapa": "Mapa",
         "Clima": "Clima",
         "Gráfico": "Gráfico",
@@ -60,10 +59,21 @@ const translations = {
         'no-datos': 'No se encontraron datos para el período especificado',
         'error-datos': 'Error al obtener los datos',
         'error-fechas': 'La fecha de inicio debe ser anterior a la fecha de fin',
-        'seleccionar-todos': 'Por favor, seleccione todos los campos requeridos'
+        'seleccionar-todos': 'Por favor, seleccione todos los campos requeridos',
+        // Traducciones para pronósticos
+        'pronostico-manana': 'Pronóstico para mañana',
+        'error-pronostico': 'Error al obtener el pronóstico del tiempo',
+        'error-api-key': 'Error de autenticación: API key inválida',
+        'ciudad-no-encontrada': 'Ciudad no encontrada',
+        'error-api': 'Error al conectar con el servicio meteorológico',
+        'no-datos-disponibles': 'No hay datos disponibles',
+        'no-pronostico-manana': 'No se encontró el pronóstico para mañana',
+        'pronostico-para': 'Pronóstico para',
+        'pronostico-no-disponible': 'Pronóstico no disponible en este momento',
+        'baliza-no-encontrada': 'Baliza no encontrada',
+        'formato-invalido': 'Formato de datos inválido'
     },
     en: {
-        "Panel Meteorológico": "Weather Panel",
         "Mapa": "Map",
         "Clima": "Weather",
         "Gráfico": "Chart",
@@ -123,7 +133,93 @@ const translations = {
         'no-datos': 'No data found for the specified period',
         'error-datos': 'Error getting data',
         'error-fechas': 'Start date must be before end date',
-        'seleccionar-todos': 'Please select all required fields'
+        'seleccionar-todos': 'Please select all required fields',
+        // Traducciones para pronósticos
+        'pronostico-manana': 'Tomorrow\'s Forecast',
+        'error-pronostico': 'Error getting weather forecast',
+        'error-api-key': 'Authentication error: Invalid API key',
+        'ciudad-no-encontrada': 'City not found',
+        'error-api': 'Error connecting to weather service',
+        'no-datos-disponibles': 'No data available',
+        'no-pronostico-manana': 'Tomorrow\'s forecast not found',
+        'pronostico-para': 'Forecast for',
+        'pronostico-no-disponible': 'Forecast not available at this time',
+        'baliza-no-encontrada': 'Beacon not found',
+        'formato-invalido': 'Invalid data format'
+    },
+    eu: {
+        "Mapa": "Mapa",
+        "Clima": "Eguraldia",
+        "Gráfico": "Grafikoa",
+        "Atributos Visibles": "Atributu Ikusgarriak",
+        "Atributos Ocultos": "Ezkutuko Atributuak",
+        "Temperatura": "Tenperatura",
+        "Humedad": "Hezetasuna",
+        "Viento": "Haizea",
+        "Presión Atmosférica": "Presio Atmosferikoa",
+        "Tiempo": "Eguraldia",
+        "Precipitaciones": "Prezipitazioak",
+        "Actualizando datos": "Datuak eguneratzen...",
+        "Última actualización": "Azken eguneratzea",
+        "No hay balizas seleccionadas": "Ez dago baliza hautatuik",
+        "Error al cargar los datos": "Errorea datuak kargatzean",
+        "No se ha seleccionado información": "Ez da informaziorik hautatu",
+        // Estados del tiempo
+        "soleado": "eguzkitsua",
+        "sol": "eguzkia",
+        "despejado": "oskarbi",
+        "parcialmente nublado": "partzialki lainotuta",
+        "nubes dispersas": "hodei sakabanatuak",
+        "intervalos nubosos": "hodei tarteak",
+        "nubes": "hodeiak",
+        "nublado": "lainotuta",
+        "muy nuboso": "oso lainotuta",
+        "cubierto": "estalia",
+        "lluvia": "euria",
+        "lluvioso": "euritsua",
+        "chubascos": "zaparradak",
+        "precipitaciones": "prezipitazioak",
+        "tormenta": "ekaitza",
+        "tormentoso": "ekaiztsua",
+        "tormenta eléctrica": "trumoi-ekaitza",
+        "nieve": "elurra",
+        "nevado": "elurtuta",
+        "aguanieve": "elur-bustia",
+        "niebla": "lainoa",
+        "bruma": "gandua",
+        // Unidades
+        "°C": "°C",
+        "km/h": "km/h",
+        "hPa": "hPa",
+        "mm": "mm",
+        "%": "%",
+        // Traducciones para el gráfico
+        'seleccionar-baliza': 'Baliza aukeratu',
+        'seleccionar-baliza-placeholder': 'Aukeratu baliza bat',
+        'fecha-inicio': 'Hasiera data',
+        'fecha-fin': 'Amaiera data',
+        'mostrar-grafico': 'Grafikoa erakutsi',
+        'temperatura': 'Tenperatura',
+        'humedad': 'Hezetasuna',
+        'temperatura-humedad': 'Tenperatura eta Hezetasuna',
+        'grafico-atributo': 'Tenperatura eta Hezetasunaren Historia',
+        'fecha': 'Data',
+        'no-datos': 'Ez da daturik aurkitu zehaztutako epean',
+        'error-datos': 'Errorea datuak lortzean',
+        'error-fechas': 'Hasiera data amaiera data baino lehenagokoa izan behar da',
+        'seleccionar-todos': 'Mesedez, bete eremu guztiak',
+        // Traducciones para pronósticos
+        'pronostico-manana': 'Biharko iragarpena',
+        'error-pronostico': 'Errorea eguraldiaren iragarpena lortzean',
+        'error-api-key': 'Autentifikazio errorea: API gakoa baliogabea',
+        'ciudad-no-encontrada': 'Hiria ez da aurkitu',
+        'error-api': 'Errorea eguraldi zerbitzuarekin konektatzean',
+        'no-datos-disponibles': 'Ez dago daturik eskuragarri',
+        'no-pronostico-manana': 'Ez da biharko iragarpenik aurkitu',
+        'pronostico-para': 'Iragarpena:',
+        'pronostico-no-disponible': 'Iragarpena ez dago eskuragarri momentu honetan',
+        'baliza-no-encontrada': 'Baliza ez da aurkitu',
+        'formato-invalido': 'Datu formatu baliogabea'
     }
 };
 
@@ -205,7 +301,7 @@ window.translations = translations;
 window.currentLanguage = currentLanguage;
 window.translateWeather = translateWeather;
 window.convertUnit = convertUnit;
-window.updateDynamicTranslations = updateDynamicTranslations;
+window.updateDynamicTranslations = traducirPagina;
 
 document.addEventListener("DOMContentLoaded", () => {
     // Cargar el idioma guardado (si existe)
@@ -217,16 +313,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Traducir la página al cargar
     translatePage();
-    updateDynamicTranslations();
+    traducirPagina();
 
     // Cambiar idioma al seleccionar una opción del selector
     document.getElementById("language-selector").addEventListener("change", (event) => {
         currentLanguage = event.target.value;
         localStorage.setItem("language", currentLanguage);
         translatePage();
-        updateDynamicTranslations();
+        traducirPagina();
         
-        // Disparar evento de cambio de idioma de manera correcta
+        // Disparar evento de cambio de idioma
         const languageEvent = new CustomEvent('languageChanged', {
             detail: { language: currentLanguage }
         });

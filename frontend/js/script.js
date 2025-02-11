@@ -369,7 +369,7 @@ async function obtenerForecast(baliza) {
         const CIUDADES = {
             1: { nombre: 'donostia', zona: 'donostialdea' },
             2: { nombre: 'irun', zona: 'coast_zone' },
-            3: { nombre: 'errenteria', zona: 'donostialdea' },
+            3: { nombre: 'eibar', zona: 'cantabrian_valleys' },
             4: { nombre: 'bilbao', zona: 'great_bilbao' },
             5: { nombre: 'gasteiz', zona: 'vitoria_gasteiz' }
         };
@@ -489,15 +489,6 @@ async function actualizarInformacionClimatica() {
                 const clima = datosClima.find(d => d.baliza_id === baliza.id);
                 if (!clima) throw new Error(translations[currentLanguage]['No se encontraron datos para esta baliza']);
 
-                let fondo = 'card-templado';
-                if (atributosActivos.has('temperatura')) {
-                    if (clima.temperatura > 25) fondo = 'card-muy-calido';
-                    else if (clima.temperatura > 20) fondo = 'card-calido';
-                    else if (clima.temperatura > 10) fondo = 'card-templado';
-                    else if (clima.temperatura > 0) fondo = 'card-frio';
-                    else fondo = 'card-muy-frio';
-                }
-
                 const climaItems = [];
                 const atributosConfig = {
                     temperatura: {
@@ -535,16 +526,16 @@ async function actualizarInformacionClimatica() {
                         </div>
                     `).join('');
 
-                        return `
-                            <div class="card mb-3 clima-card ${fondo}">
-                                <div class="card-header">
-                                    <h5 class="card-title">
-                                        <i class="fas fa-map-marker-alt"></i> 
+                return `
+                    <div class="card mb-3 clima-card" data-tiempo="${clima.tiempo.toLowerCase()}">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <i class="fas fa-map-marker-alt"></i> 
                                 <span class="municipio-nombre" data-municipio="${baliza.municipio}">${baliza.municipio}</span>
-                                        <i class="${obtenerIconoTiempo(clima.tiempo)}" style="margin-left: 10px;"></i>
-                                    </h5>
-                                </div>
-                                <div class="card-body">
+                                <i class="${obtenerIconoTiempo(clima.tiempo)}" style="margin-left: 10px;"></i>
+                            </h5>
+                        </div>
+                        <div class="card-body">
                             ${atributosActivos.size === 0 ? 
                                 `<p class="text-center" style="margin: 20px 0; color: rgba(255,255,255,0.8);">
                                     <i class="fas fa-info-circle" style="margin-right: 8px;"></i>
@@ -554,27 +545,27 @@ async function actualizarInformacionClimatica() {
                                     `<div class="clima-info">${itemsHTML}</div>` : 
                                     `<p class="text-center" data-translate="No hay datos visibles">${translations[currentLanguage]['No hay datos visibles']}</p>`
                             }
-                                    <div class="ultima-actualizacion">
-                                        <i class="far fa-clock"></i>
+                            <div class="ultima-actualizacion">
+                                <i class="far fa-clock"></i>
                                 <span data-translate="Última actualización">${translations[currentLanguage]['Última actualización']}</span>: 
                                 ${new Date(clima.fecha).toLocaleString(currentLanguage === 'es' ? 'es-ES' : 'en-US')}
-                                    </div>
-                                </div>
                             </div>
-                        `;
-                    } catch (error) {
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
                 console.error(`Error procesando datos para ${baliza.municipio}:`, error);
-                        return `
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h5 class="card-title">${baliza.municipio}</h5>
-                                </div>
-                                <div class="card-body">
+                return `
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="card-title">${baliza.municipio}</h5>
+                        </div>
+                        <div class="card-body">
                             <p class="card-text">${translations[currentLanguage]['Error al cargar los datos']}</p>
-                                </div>
-                            </div>
-                        `;
-                    }
+                        </div>
+                    </div>
+                `;
+            }
         });
         
         $("#tiempo-actual").html(contenidoHTML.join(''));
