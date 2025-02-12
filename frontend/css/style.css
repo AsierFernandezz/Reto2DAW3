@@ -213,6 +213,9 @@ body {
 .clima-card[data-tiempo="muy nuboso"] { background-image: url('../img/weather/nublado.jpg'); }
 .clima-card[data-tiempo="cubierto"] { background-image: url('../img/weather/nublado.jpg'); }
 .clima-card[data-tiempo="lluvia"] { background-image: url('../img/weather/lluvia.jpg'); }
+.clima-card[data-tiempo="lluvia ligera"] { background-image: url('../img/weather/lluvia.jpg'); }
+.clima-card[data-tiempo="lluvia moderada"] { background-image: url('../img/weather/lluvia.jpg'); }
+.clima-card[data-tiempo="lluvia intensa"] { background-image: url('../img/weather/lluvia.jpg'); }
 .clima-card[data-tiempo="lluvioso"] { background-image: url('../img/weather/lluvia.jpg'); }
 .clima-card[data-tiempo="chubascos"] { background-image: url('../img/weather/lluvia.jpg'); }
 .clima-card[data-tiempo="precipitaciones"] { background-image: url('../img/weather/lluvia.jpg'); }
@@ -511,7 +514,7 @@ body {
     .clima-item {
         padding: 8px;
         height: 36px;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
     .card-header h5 {
@@ -535,7 +538,7 @@ body {
 
     .clima-item {
         height: 34px;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
 }
 
