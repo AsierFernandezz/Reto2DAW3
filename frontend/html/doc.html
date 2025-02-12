@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación - Aplicación Meteorológica</title>
+    <style>
+        :root {
+            --color-primary: #34495e;
+            --color-secondary: #3498db;
+            --color-text: #2c3e50;
+            --color-background: #f5f6fa;
+            --color-code: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background: var(--color-background);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: var(--color-primary);
+            margin: 1.5rem 0 1rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--color-secondary);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: var(--color-code);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background: var(--color-code);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .tech-item {
+            background: var(--color-secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Documentación del Proyecto: Aplicación Meteorológica</h1>
+
+        <div class="section">
+            <h2>1. Descripción General</h2>
+            <p>Esta aplicación web proporciona información meteorológica en tiempo real para diferentes municipios del País Vasco. Permite visualizar datos climáticos, pronósticos y estadísticas históricas a través de una interfaz interactiva y fácil de usar.</p>
+            
+            <h3>Características Principales</h3>
+            <ul>
+                <li>Visualización de datos meteorológicos en tiempo real</li>
+                <li>Mapa interactivo con marcadores de ubicación</li>
+                <li>Sistema de drag and drop para personalizar la información visible</li>
+                <li>Gráficos históricos de temperatura y humedad</li>
+                <li>Soporte multiidioma (Español, Euskera, Inglés)</li>
+                <li>Diseño responsive adaptable a diferentes dispositivos</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Arquitectura Técnica</h2>
+            
+            <h3>Stack Tecnológico</h3>
+            <div class="tech-stack">
+                <span class="tech-item">HTML5</span>
+                <span class="tech-item">CSS3</span>
+                <span class="tech-item">JavaScript</span>
+                <span class="tech-item">jQuery</span>
+                <span class="tech-item">jQuery UI</span>
+                <span class="tech-item">Leaflet.js</span>
+                <span class="tech-item">Chart.js</span>
+            </div>
+
+            <h3>Estructura del Proyecto</h3>
+            <pre>
+frontend/
+├── css/
+│   └── style.css
+├── js/
+│   ├── script.js
+│   └── traduccion.js
+└── html/
+    ├── tiempo.html
+    └── doc.html
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>3. Componentes Principales</h2>
+
+            <h3>3.1 Sistema de Tabs</h3>
+            <p>La aplicación utiliza jQuery UI Tabs para organizar el contenido en tres secciones principales:</p>
+            <ul>
+                <li><strong>Mapa:</strong> Visualización geográfica de las balizas meteorológicas</li>
+                <li><strong>Clima:</strong> Información detallada del tiempo actual con sistema drag & drop</li>
+                <li><strong>Gráfico:</strong> Visualización histórica de datos meteorológicos</li>
+            </ul>
+
+            <h3>3.2 Sistema de Drag & Drop</h3>
+            <p>Permite personalizar la información visible en las tarjetas meteorológicas mediante un sistema intuitivo de arrastrar y soltar. Los atributos disponibles incluyen:</p>
+            <ul>
+                <li>Temperatura</li>
+                <li>Humedad</li>
+                <li>Viento</li>
+                <li>Presión Atmosférica</li>
+                <li>Estado del Tiempo</li>
+                <li>Precipitaciones</li>
+            </ul>
+
+            <h3>3.3 Sistema de Internacionalización</h3>
+            <p>Implementa un sistema completo de traducción que soporta:</p>
+            <ul>
+                <li>Cambio dinámico de idioma sin recargar la página</li>
+                <li>Persistencia del idioma seleccionado</li>
+                <li>Traducción automática de valores y unidades</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Características Técnicas Detalladas</h2>
+
+            <h3>4.1 Gestión de Estado</h3>
+            <p>La aplicación mantiene el estado mediante:</p>
+            <ul>
+                <li>LocalStorage para persistencia de datos</li>
+                <li>Caché de datos climáticos</li>
+                <li>Estado de selección de balizas</li>
+                <li>Preferencias de usuario (idioma, atributos visibles)</li>
+            </ul>
+
+            <h3>4.2 Optimización de Rendimiento</h3>
+            <ul>
+                <li>Implementación de caché para datos meteorológicos</li>
+                <li>Lazy loading de componentes</li>
+                <li>Optimización de recursos gráficos</li>
+                <li>Minimización de llamadas al servidor</li>
+            </ul>
+
+            <h3>4.3 Diseño Responsivo</h3>
+            <p>Sistema de diseño adaptativo que incluye:</p>
+            <ul>
+                <li>Media queries para diferentes breakpoints</li>
+                <li>Layouts flexibles usando CSS Grid y Flexbox</li>
+                <li>Optimización de componentes para dispositivos móviles</li>
+                <li>Adaptación de interacciones touch para móviles</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Integración con APIs</h2>
+            
+            <h3>5.1 API de Euskalmet</h3>
+            <table>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>/weather/regions/basque_country/zones/{zona}/locations/{ciudad}/forecast</td>
+                    <td>Obtención de pronósticos meteorológicos</td>
+                </tr>
+            </table>
+
+            <h3>5.2 API Local</h3>
+            <table>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>/api/balizas</td>
+                    <td>Listado de balizas meteorológicas</td>
+                </tr>
+                <tr>
+                    <td>/api/climas/ultima/</td>
+                    <td>Últimos datos climáticos registrados</td>
+                </tr>
+                <tr>
+                    <td>/api/historico/{id}</td>
+                    <td>Datos históricos de una baliza específica</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>6. Guía de Mantenimiento</h2>
+
+            <h3>6.1 Actualización de Traducciones</h3>
+            <p>Las traducciones se encuentran en el archivo <code>traduccion.js</code>. Para añadir un nuevo idioma:</p>
+            <ol>
+                <li>Agregar nuevo objeto de traducción en el objeto <code>translations</code></li>
+                <li>Añadir la opción en el selector de idiomas en <code>tiempo.html</code></li>
+                <li>Implementar las traducciones necesarias para todas las claves existentes</li>
+            </ol>
+
+            <h3>6.2 Añadir Nuevos Atributos Meteorológicos</h3>
+            <ol>
+                <li>Agregar el atributo en la estructura HTML de las tarjetas climáticas</li>
+                <li>Actualizar el sistema de drag & drop</li>
+                <li>Añadir las traducciones correspondientes</li>
+                <li>Implementar la lógica de visualización en <code>script.js</code></li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>7. Consideraciones de Seguridad</h2>
+            <ul>
+                <li>Implementación de CORS para protección de API</li>
+                <li>Sanitización de datos de entrada</li>
+                <li>Manejo seguro de API keys</li>
+                <li>Validación de datos en cliente y servidor</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Futuras Mejoras</h2>
+            <ul>
+                <li>Implementación de PWA para funcionamiento offline</li>
+                <li>Sistema de notificaciones push para alertas meteorológicas</li>
+                <li>Ampliación de la cobertura geográfica</li>
+                <li>Integración con más fuentes de datos meteorológicos</li>
+                <li>Mejora en la visualización de datos históricos</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>9. Contexto del Proyecto</h2>
+            <p>Este proyecto forma parte del Reto Intermodular 2DAW3 24-25, desarrollado entre el 20/12/24 y el 14/02/25. El objetivo principal es crear una aplicación web que sirva como demostración de las habilidades adquiridas durante el ciclo formativo de DAW.</p>
+
+            <h3>9.1 Módulos Involucrados</h3>
+            <ul>
+                <li>DIW (Diseño de Interfaces Web)</li>
+                <li>DWS (Desarrollo Web en Servidor)</li>
+                <li>DWC (Desarrollo Web en Cliente)</li>
+                <li>DAW (Despliegue de Aplicaciones Web)</li>
+            </ul>
+
+            <h3>9.2 Objetivos Específicos</h3>
+            <ul>
+                <li>Desarrollo de una SPA (Single Page Application) para visualización de datos meteorológicos</li>
+                <li>Implementación de sistema de persistencia con LocalStorage</li>
+                <li>Integración con APIs externas (Euskalmet)</li>
+                <li>Desarrollo de API REST propia</li>
+                <li>Contenedorización con Docker</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>10. Arquitectura del Sistema</h2>
+
+            <h3>10.1 Frontend (SPA)</h3>
+            <p>La aplicación frontend está desarrollada como una Single Page Application utilizando las siguientes tecnologías:</p>
+            <ul>
+                <li>HTML5 y CSS3 para la estructura y estilos</li>
+                <li>JavaScript con jQuery y jQuery UI para la interactividad</li>
+                <li>Leaflet.js para la visualización de mapas</li>
+                <li>Chart.js para la generación de gráficos</li>
+                <li>Bootstrap para componentes UI</li>
+            </ul>
+
+            <h3>10.2 Backend</h3>
+            <p>El backend está desarrollado en fases:</p>
+            <ol>
+                <li><strong>Fase 1:</strong> Generación de datos aleatorios y almacenamiento en MySQL</li>
+                <li><strong>Fase 2:</strong> Desarrollo de API REST</li>
+                <li><strong>Fase 3:</strong> Integración con OpenData Euskadi</li>
+                <li><strong>Fase 4:</strong> Documentación de la API</li>
+            </ol>
+
+            <h3>10.3 Infraestructura</h3>
+            <p>La aplicación está containerizada usando Docker, con la siguiente estructura:</p>
+            <pre>
+Docker/
+├── frontend/
+│   └── nginx
+├── backend/
+│   └── php-fpm
+├── proxy/
+│   └── nginx
+└── database/
+    └── mysql</pre>
+        </div>
+
+        <div class="section">
+            <h2>11. Diseño y Usabilidad</h2>
+
+            <h3>11.1 Diseño Responsivo</h3>
+            <p>La aplicación implementa dos diseños principales:</p>
+            <ul>
+                <li><strong>Desktop:</strong> Diseño optimizado para pantallas grandes con layout en grid</li>
+                <li><strong>Mobile:</strong> Diseño adaptado para dispositivos móviles con navegación simplificada</li>
+            </ul>
+
+            <h3>11.2 Accesibilidad</h3>
+            <ul>
+                <li>Implementación de ARIA labels</li>
+                <li>Contraste de colores adecuado</li>
+                <li>Navegación por teclado</li>
+                <li>Textos alternativos para imágenes</li>
+            </ul>
+
+            <h3>11.3 Interactividad</h3>
+            <p>Características interactivas principales:</p>
+            <ul>
+                <li>Sistema drag & drop para personalización de widgets</li>
+                <li>Tooltips informativos</li>
+                <li>Mapas interactivos con marcadores personalizados</li>
+                <li>Gráficos dinámicos con datos históricos</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>12. Integración con APIs Externas</h2>
+
+            <h3>12.1 OpenData Euskadi</h3>
+            <p>Integración con la API de Euskalmet para obtención de datos meteorológicos:</p>
+            <table>
+                <tr>
+                    <th>Recurso</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>Red de Estaciones</td>
+                    <td>Información sobre ubicación y características de las estaciones meteorológicas</td>
+                </tr>
+                <tr>
+                    <td>Mediciones</td>
+                    <td>Datos meteorológicos con frecuencia diezminutal</td>
+                </tr>
+                <tr>
+                    <td>Pronósticos</td>
+                    <td>Predicciones meteorológicas por ubicación</td>
+                </tr>
+            </table>
+
+            <h3>12.2 Autenticación y Seguridad</h3>
+            <ul>
+                <li>Gestión segura de API keys</li>
+                <li>Implementación de rate limiting</li>
+                <li>Validación de datos</li>
+                <li>Manejo de errores y timeouts</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>13. Despliegue y Mantenimiento</h2>
+
+            <h3>13.1 Requisitos de Sistema</h3>
+            <ul>
+                <li>Docker y Docker Compose</li>
+                <li>Nginx como proxy inverso</li>
+                <li>MySQL 8.0 o superior</li>
+                <li>PHP 8.1 o superior con Laravel</li>
+            </ul>
+
+            <h3>13.2 Proceso de Despliegue</h3>
+            <ol>
+                <li>Configuración de variables de entorno</li>
+                <li>Construcción de imágenes Docker</li>
+                <li>Inicialización de la base de datos</li>
+                <li>Configuración del proxy inverso</li>
+                <li>Despliegue de contenedores</li>
+            </ol>
+
+            <h3>13.3 Monitorización</h3>
+            <ul>
+                <li>Logs de aplicación</li>
+                <li>Métricas de rendimiento</li>
+                <li>Alertas de sistema</li>
+                <li>Backup automático de datos</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>14. Base de Datos</h2>
+
+            <h3>14.1 Estructura Principal</h3>
+            <p>La aplicación utiliza una base de datos MySQL con las siguientes tablas principales:</p>
+
+            <h4>Tabla baliza</h4>
+            <p>Almacena la información de las estaciones meteorológicas:</p>
+            <pre>
+CREATE TABLE baliza (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    latitud VARCHAR(20),
+    longitud VARCHAR(20),
+    municipio VARCHAR(50),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);</pre>
+
+            <h4>Tabla climas</h4>
+            <p>Almacena los datos meteorológicos recopilados:</p>
+            <pre>
+CREATE TABLE climas (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    baliza_id BIGINT,
+    temperatura DECIMAL(5,2) NULL,
+    presion_atmosferica DECIMAL(6,2) NULL,
+    humedad DECIMAL(5,2) NULL,
+    precipitaciones DECIMAL(5,2) NULL,
+    viento DECIMAL(5,2) NULL,
+    tiempo VARCHAR(255) NULL,
+    fecha DATETIME NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    FOREIGN KEY (baliza_id) REFERENCES baliza(id)
+);</pre>
+
+            <h4>Tabla sessions</h4>
+            <p>Gestiona las sesiones de usuario:</p>
+            <pre>
+CREATE TABLE sessions (
+    id VARCHAR(255) PRIMARY KEY,
+    user_id BIGINT NULL,
+    ip_address VARCHAR(45) NULL,
+    user_agent TEXT NULL,
+    payload LONGTEXT,
+    last_activity INTEGER
+);</pre>
+
+            <h3>14.2 Datos Iniciales (Seeders)</h3>
+            
+            <h4>SeederBaliza</h4>
+            <p>Inicializa las balizas con las siguientes ubicaciones:</p>
+            <ul>
+                <li>Bilbao (43.2630, -2.9350)</li>
+                <li>Donostia (43.3208, -1.9844)</li>
+                <li>Vitoria-Gasteiz (42.8467, -2.6716)</li>
+                <li>Eibar (43.1845, -2.4717)</li>
+                <li>Irun (43.3390, -1.7896)</li>
+            </ul>
+
+            <h4>SeederClima</h4>
+            <p>Genera datos climáticos históricos con las siguientes características:</p>
+            <ul>
+                <li>Genera datos cada 2 horas durante los últimos 6 meses</li>
+                <li>Ajusta temperaturas según:
+                    <ul>
+                        <li>Estación del año:
+                            <ul>
+                                <li>Invierno: 0°C a 12°C</li>
+                                <li>Primavera: 8°C a 20°C</li>
+                                <li>Verano: 18°C a 35°C</li>
+                                <li>Otoño: 10°C a 22°C</li>
+                            </ul>
+                        </li>
+                        <li>Hora del día:
+                            <ul>
+                                <li>Madrugada (0-6h): -2°C a -3°C del rango base</li>
+                                <li>Mañana (6-12h): +1°C a -1°C del rango base</li>
+                                <li>Tarde (12-18h): +3°C a +1°C del rango base</li>
+                                <li>Noche (18-24h): -1°C a -2°C del rango base</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>14.3 Relaciones</h3>
+            <ul>
+                <li>Cada registro en <code>climas</code> está asociado a una <code>baliza</code> a través de <code>baliza_id</code></li>
+                <li>La relación está definida en el modelo <code>Clima</code> usando <code>belongsTo(Baliza::class)</code></li>
+            </ul>
+
+            <h3>14.4 Configuración</h3>
+            <ul>
+                <li>El sistema utiliza MySQL como base de datos principal</li>
+                <li>Soporta caché en base de datos</li>
+                <li>Incluye sistema de gestión de sesiones en base de datos</li>
+                <li>Utiliza migraciones de Laravel para la gestión del esquema</li>
+                <li>Los datos de conexión se configuran a través de variables de entorno en el archivo <code>.env</code></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>15. API y Controladores</h2>
+
+            <h3>15.1 Endpoints de la API</h3>
+            <p>En el archivo <code>routes/api.php</code> se encuentran definidos los endpoints de la API, que son direcciones o URLs que permiten a los consumidores interactuar con el sistema. Cada endpoint representa un punto de acceso específico donde se pueden enviar o recibir datos, actuando como una interfaz de comunicación entre el cliente y el servidor.</p>
+
+            <p>La aplicación implementa una arquitectura REST completa que proporciona acceso a datos meteorológicos en tiempo real e históricos. La API está diseñada siguiendo los principios REST y las mejores prácticas de diseño de APIs:</p>
+
+            <ul>
+                <li><strong>Autenticación:</strong> No requiere autenticación para endpoints públicos de lectura.</li>
+                <li><strong>Formato de respuesta:</strong> Todas las respuestas se devuelven en formato JSON.</li>
+                <li><strong>Versionado:</strong> La API actual corresponde a la v1, aunque no se especifica en la URL para mantener la compatibilidad.</li>
+                <li><strong>Rate Limiting:</strong> 60 peticiones por minuto por IP.</li>
+                <li><strong>Caché:</strong> Las respuestas incluyen headers de caché apropiados para optimizar el rendimiento.</li>
+            </ul>
+
+            <p>Base URL para todos los endpoints: <code>http://localhost:85/api</code></p>
+            
+            <p>La aplicación expone los siguientes endpoints REST:</p>
+            
+            <table>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Método</th>
+                    <th>Parámetros</th>
+                    <th>Respuesta</th>
+                </tr>
+                <tr>
+                    <td><code>/api/climas/ultima</code></td>
+                    <td>GET</td>
+                    <td>No requiere parámetros</td>
+                    <td>Array de objetos con la última medición de cada baliza:
+                        <pre>
+[{
+    "id": 1,
+    "baliza_id": 1,
+    "temperatura": 15.5,
+    "presion_atmosferica": 1013.25,
+    "humedad": 75.0,
+    "precipitaciones": 0.0,
+    "viento": 12.5,
+    "tiempo": "parcialmente nublado",
+    "fecha": "2024-01-20 10:00:00",
+    "baliza": {
+        "id": 1,
+        "municipio": "Donostia",
+        "latitud": "43.3208",
+        "longitud": "-1.9844"
+    }
+}]</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>/api/historico/{baliza_id}</code></td>
+                    <td>GET</td>
+                    <td>
+                        <ul>
+                            <li><strong>baliza_id</strong>: ID de la baliza (en URL)</li>
+                            <li><strong>inicio</strong>: Fecha y hora inicial (YYYY-MM-DD HH:mm:ss)</li>
+                            <li><strong>fin</strong>: Fecha y hora final (YYYY-MM-DD HH:mm:ss)</li>
+                        </ul>
+                        Ejemplo: <code>/api/historico/1?inicio=2024-01-01 00:00:00&fin=2024-01-31 23:59:59</code>
+                    </td>
+                    <td>Array de objetos con mediciones históricas:
+                        <pre>
+[{
+    "id": 1,
+    "baliza_id": 1,
+    "temperatura": 12.5,
+    "presion_atmosferica": 1012.0,
+    "humedad": 80.0,
+    "precipitaciones": 2.5,
+    "viento": 15.0,
+    "tiempo": "lluvia",
+    "fecha": "2024-01-01 08:00:00"
+}]</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>/api/climas</code></td>
+                    <td>GET</td>
+                    <td>No requiere parámetros</td>
+                    <td>Array con todas las mediciones climáticas:
+                        <pre>
+[{
+    "id": 1,
+    "baliza_id": 1,
+    "temperatura": 14.0,
+    "presion_atmosferica": 1015.0,
+    "humedad": 70.0,
+    "precipitaciones": 0.0,
+    "viento": 10.0,
+    "tiempo": "soleado",
+    "fecha": "2024-01-20 12:00:00"
+}]</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>/api/balizas</code></td>
+                    <td>GET</td>
+                    <td>No requiere parámetros</td>
+                    <td>Array con información de todas las balizas:
+                        <pre>
+[{
+    "id": 1,
+    "municipio": "Donostia",
+    "latitud": "43.3208",
+    "longitud": "-1.9844",
+    "created_at": "2024-01-01 00:00:00",
+    "updated_at": "2024-01-01 00:00:00"
+}]</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>/api/euskalmet/pronostico/{municipio}</code></td>
+                    <td>GET</td>
+                    <td>
+                        <ul>
+                            <li><strong>municipio</strong>: Nombre del municipio (en URL)</li>
+                        </ul>
+                        Ejemplo: <code>/api/euskalmet/pronostico/donostia</code>
+                    </td>
+                    <td>Objeto con el pronóstico del tiempo:
+                        <pre>
+{
+    "forecastText": {
+        "SPANISH": "Mañana en Donostia...",
+        "BASQUE": "Bihar Donostian..."
+    },
+    "date": "2024-01-21",
+    "municipality": "Donostia"
+}</pre>
+                    </td>
+                </tr>
+            </table>
+
+            <h3>15.2 Códigos de Respuesta HTTP</h3>
+            <table>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Casos de Uso</th>
+                </tr>
+                <tr>
+                    <td>200 OK</td>
+                    <td>La petición se completó exitosamente</td>
+                    <td>Respuesta exitosa a cualquier GET</td>
+                </tr>
+                <tr>
+                    <td>201 Created</td>
+                    <td>Recurso creado exitosamente</td>
+                    <td>Creación de nueva baliza o medición</td>
+                </tr>
+                <tr>
+                    <td>400 Bad Request</td>
+                    <td>Error en la petición del cliente</td>
+                    <td>Parámetros inválidos o faltantes</td>
+                </tr>
+                <tr>
+                    <td>404 Not Found</td>
+                    <td>Recurso no encontrado</td>
+                    <td>Baliza o medición no existe</td>
+                </tr>
+                <tr>
+                    <td>500 Internal Server Error</td>
+                    <td>Error interno del servidor</td>
+                    <td>Errores de conexión con la base de datos</td>
+                </tr>
+            </table>
+
+            <h3>15.2 Controladores</h3>
+
+            <h4>15.2.1 ClimaController</h4>
+            <p>Gestiona las operaciones relacionadas con los datos climáticos:</p>
+            <ul>
+                <li><strong>ultimaMedicionPorBaliza():</strong> 
+                    <pre>
+// Obtiene la última medición de cada baliza usando una subconsulta SQL
+$ultimasMediciones = Clima::select('climas.*')
+    ->join(DB::raw('(
+        SELECT baliza_id, MAX(fecha) as max_fecha
+        FROM climas
+        GROUP BY baliza_id
+    ) as ultimas'), function($join) {
+        $join->on('climas.baliza_id', '=', 'ultimas.baliza_id')
+            ->on('climas.fecha', '=', 'ultimas.max_fecha');
+    })
+    ->with('baliza')
+    ->get();</pre>
+                </li>
+                <li><strong>historico($baliza_id):</strong>
+                    <pre>
+// Obtiene datos históricos con validación de fechas
+$datosHistoricos = Clima::where('baliza_id', $baliza_id)
+    ->whereBetween('fecha', [$inicio, $fin])
+    ->orderBy('fecha', 'asc')
+    ->get();</pre>
+                </li>
+            </ul>
+
+            <h4>15.2.2 BalizaController</h4>
+            <p>Gestiona las operaciones CRUD para las balizas meteorológicas:</p>
+            <ul>
+                <li>index(): Listado de todas las balizas</li>
+                <li>show($id): Detalles de una baliza específica</li>
+                <li>store(Request $request): Crear nueva baliza</li>
+                <li>update(Request $request, $id): Actualizar baliza existente</li>
+                <li>destroy($id): Eliminar baliza</li>
+            </ul>
+
+            <h3>15.3 Tarea Programada (Crontab)</h3>
+            <p>La aplicación incluye una tarea programada para actualizar automáticamente los datos meteorológicos:</p>
+            
+            <h4>15.3.1 Comando CrontabAemet</h4>
+            <pre>
+// Configuración del comando
+protected $signature = 'fetch:clima';
+protected $description = 'Obtiene el clima desde OpenWeather y lo guarda en la base de datos';
+
+// Proceso principal
+public function handle() {
+    $apiKey = env('API_KEY');
+    $balizas = Baliza::all();
+    
+    foreach ($balizas as $baliza) {
+        $response = Http::get("https://api.openweathermap.org/data/2.5/weather", [
+            'q' => $baliza->municipio,
+            'appid' => $apiKey,
+            'units' => 'metric',
+            'lang' => 'es'
+        ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            Clima::create([
+                'fecha' => now(),
+                'temperatura' => $data['main']['temp'],
+                'humedad' => $data['main']['humidity'],
+                'tiempo' => $data['weather'][0]['description'],
+                'viento' => $data['wind']['speed'],
+                'precipitaciones' => $data['rain']['1h'] ?? 0,
+                'presion_atmosferica' => $data['main']['pressure'] ?? 0,
+                'baliza_id' => $baliza->id,
+            ]);
+        }
+    }
+}</pre>
+
+            <h3>15.4 Seguridad y Validación</h3>
+            <ul>
+                <li>Validación de fechas en consultas históricas</li>
+                <li>Manejo de errores y respuestas HTTP apropiadas</li>
+                <li>Protección de rutas sensibles con middleware auth:sanctum</li>
+                <li>Validación de datos de entrada en operaciones CRUD</li>
+            </ul>
+
+            <h3>15.5 Integración con Frontend</h3>
+            <p>El frontend se comunica con la API mediante fetch:</p>
+            <pre>
+// Ejemplo de obtención de últimas mediciones
+async function actualizarDatosClima() {
+    const response = await fetch('http://localhost:85/api/climas/ultima/');
+    const datos = await response.json();
+    // Procesamiento de datos...
+}
+
+// Ejemplo de obtención de datos históricos
+async function cargarDatosGrafico(balizaId, fechaInicio, fechaFin) {
+    const response = await fetch(
+        `http://localhost:85/api/historico/${balizaId}?inicio=${fechaInicio}&fin=${fechaFin}`
+    );
+    const datos = await response.json();
+    // Actualización del gráfico...
+}</pre>
+        </div>
+
+    </div>
+</body>
+</html>
