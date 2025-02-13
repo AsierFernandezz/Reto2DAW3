@@ -13,25 +13,25 @@ class ClimaFactory extends Factory
 
     public function definition(): array
     {
-        // Obtener un ID de Balizas existente
+        //obtiene un ID deb balizas
         $balizaId = Baliza::inRandomOrder()->first()->id;
 
-        // Obtener una fecha aleatoria desde hace 6 meses hasta hoy
+        //obtiene una fecha aleatoria desde hace 6 meses hasta hoy
         $startDate = Carbon::now()->subMonths(6)->startOfDay();
         $endDate = Carbon::now()->endOfDay();
         $date = Carbon::createFromTimestamp(rand($startDate->timestamp, $endDate->timestamp));
 
-        // Redondear a intervalos de 2 horas
+        //redondea a intervalos de 2 horas
         $date->minute(0)->second(0);
         if ($date->hour % 2 !== 0) {
             $date->subHour();
         }
 
-        // Determinar la estación del año basada en el mes
+        //determina la estacion del año segun en el mes
         $month = $date->month;
         $hour = $date->hour;
 
-        // Ajustar rangos de temperatura según la estación de forma más suave
+        //ajusta rangos de temperatura segun la estacion
         if ($month == 12 || $month <= 2) { // Invierno
             $minTemp = 0;
             $maxTemp = 12;
@@ -46,7 +46,7 @@ class ClimaFactory extends Factory
             $maxTemp = 22;
         }
 
-        // Ajustar temperatura según la hora del día de forma más gradual
+        //ajusta la temperatura segun la hora del dia
         if ($hour >= 0 && $hour < 6) { // Madrugada
             $minTemp -= 2;
             $maxTemp -= 3;
@@ -68,7 +68,7 @@ class ClimaFactory extends Factory
         $viento = $this->faker->randomFloat(0, 0, 80); // Velocidad del viento más realista
         $humedad = $this->faker->numberBetween(30, 100); // Humedad entre 30% y 100%
 
-        // Determinar el tiempo basado en las condiciones
+        //determina el tiempo basado en las condiciones
         $tiempo = 'Soleado';
         if ($precipitaciones > 15) {
             $tiempo = 'Tormentoso';
